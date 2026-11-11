@@ -56,28 +56,29 @@
   .bg span {
     position: absolute;
     border-radius: 50%;
-    filter: blur(90px);
     will-change: transform;
+    /* bez filter: blur() — miękkie przejścia daje sam radial-gradient,
+       a filtr na animowanym elemencie kazał przeglądarce rozmywać każdą klatkę */
   }
 
   .bg .b1 {
     width: 58vmax; height: 58vmax;
     left: -18vmax; top: -22vmax;
-    background: radial-gradient(circle, rgba(72, 214, 148, .34), transparent 62%);
+    background: radial-gradient(circle, rgba(72, 214, 148, .30) 0%, rgba(72, 214, 148, .12) 38%, transparent 72%);
     animation: drift1 34s ease-in-out infinite alternate;
   }
 
   .bg .b2 {
     width: 52vmax; height: 52vmax;
     right: -16vmax; bottom: -18vmax;
-    background: radial-gradient(circle, rgba(48, 150, 224, .30), transparent 64%);
+    background: radial-gradient(circle, rgba(48, 150, 224, .26) 0%, rgba(48, 150, 224, .10) 40%, transparent 74%);
     animation: drift2 42s ease-in-out infinite alternate;
   }
 
   .bg .b3 {
     width: 38vmax; height: 38vmax;
     right: 16vmax; top: -10vmax;
-    background: radial-gradient(circle, rgba(214, 164, 92, .20), transparent 66%);
+    background: radial-gradient(circle, rgba(214, 164, 92, .18) 0%, rgba(214, 164, 92, .07) 42%, transparent 76%);
     animation: drift3 48s ease-in-out infinite alternate;
   }
 
@@ -85,23 +86,6 @@
   @keyframes drift2 { to { transform: translate3d(-8vmax, -5vmax, 0) scale(1.1); } }
   @keyframes drift3 { to { transform: translate3d(-5vmax, 7vmax, 0) scale(.9); } }
 
-  /* wolno obracająca się „zorza” — daje ruch bez migotania plam */
-  .bg .aurora {
-    inset: -35%;
-    width: auto; height: auto;
-    border-radius: 0;
-    filter: blur(110px);
-    opacity: .38;
-    background: conic-gradient(from 0deg,
-      rgba(72, 214, 148, .22),
-      rgba(48, 150, 224, .20),
-      rgba(140, 120, 220, .14),
-      rgba(214, 164, 92, .16),
-      rgba(72, 214, 148, .22));
-    animation: spin 90s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   /* siatka techniczna, wygaszana radialnie */
   .bg .grid {
@@ -124,9 +108,8 @@
     width: auto; height: auto;
     border-radius: 0;
     filter: none;
-    opacity: .05;
+    opacity: .045;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
   }
 
   /* winieta — przyciemnia brzegi, kieruje wzrok na kartę */
@@ -281,7 +264,7 @@
   .role span { color: var(--accent); }
 
   .tagline {
-    margin: 26px 0 auto;
+    margin: 26px 0 0;
     font-size: clamp(19px, 2.5vw, 25px);
     line-height: 1.42;
     color: #d5dbe3;
@@ -296,6 +279,43 @@
   }
 
 
+
+  .front-contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 0 auto;
+  }
+
+  .fc-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-right: 4px;
+  }
+
+  .fc {
+    display: grid;
+    place-items: center;
+    width: 42px; height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .04);
+    color: var(--accent);
+    transition: transform .16s ease, border-color .16s ease, background .16s ease, color .16s ease;
+  }
+
+  .fc svg { width: 18px; height: 18px; }
+
+  .fc:hover, .fc:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(110, 231, 160, .55);
+    background: rgba(110, 231, 160, .12);
+    color: #fff;
+    outline: none;
+  }
 
   /* ---------- tył ---------- */
   /* tył: dwie kolumny — osoba i kontakt po lewej, technologie po prawej */
@@ -618,7 +638,6 @@
 <body>
 
 <div class="bg" aria-hidden="true">
-  <span class="aurora"></span>
   <span class="b1"></span>
   <span class="b2"></span>
   <span class="b3"></span>
@@ -648,6 +667,19 @@
       <p class="tagline">
         Utrzymuję serwery, na których <em>coś naprawdę działa</em> — i odpowiadam, kiedy przestaje.
       </p>
+
+      <div class="front-contact">
+        <span class="fc-label">napisz</span>
+        <a class="fc" href="mailto:kacper.pietrusiewicz@o2.pl" aria-label="Wyślij e-mail" title="kacper.pietrusiewicz@o2.pl">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m3 6.5 9 7 9-7"/></svg>
+        </a>
+        <a class="fc" href="https://github.com/pietrusiewicz" target="_blank" rel="noopener" aria-label="GitHub" title="github.com/pietrusiewicz">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.1c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.4 3.5 1 .1-.8.4-1.4.8-1.7-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.5 4.8 18.5 5 18.5 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg>
+        </a>
+        <a class="fc" href="https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="linkedin.com/in/kacper-pietrusiewicz">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.24 8.5h4.5V24H.24V8.5Zm7.98 0h4.3v2.1h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 2.9 5.4 6.7V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7s-2.6 1.7-2.6 3.6V24h-4.5V8.5Z"/></svg>
+        </a>
+      </div>
 
     </section>
 
