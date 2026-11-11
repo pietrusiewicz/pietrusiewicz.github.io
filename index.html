@@ -40,58 +40,102 @@
     overflow-x: hidden;
   }
 
-  /* ---------- tło: trzy dryfujące poświaty + siatka ---------- */
+  /* ---------- tło: gradient bazowy, aurora, ziarno, winieta ---------- */
   .bg {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    background:
+      radial-gradient(120% 90% at 18% 0%, #12202a 0%, transparent 55%),
+      radial-gradient(100% 80% at 88% 100%, #141a26 0%, transparent 60%),
+      linear-gradient(170deg, #0b1117 0%, #080c11 55%, #06090d 100%);
   }
 
   .bg span {
     position: absolute;
     border-radius: 50%;
-    filter: blur(70px);
-    opacity: .55;
+    filter: blur(90px);
     will-change: transform;
   }
 
   .bg .b1 {
-    width: 46vmax; height: 46vmax;
-    left: -12vmax; top: -14vmax;
-    background: radial-gradient(circle, rgba(110, 231, 160, .50), transparent 66%);
-    animation: drift1 24s ease-in-out infinite alternate;
+    width: 58vmax; height: 58vmax;
+    left: -18vmax; top: -22vmax;
+    background: radial-gradient(circle, rgba(72, 214, 148, .34), transparent 62%);
+    animation: drift1 34s ease-in-out infinite alternate;
   }
 
   .bg .b2 {
-    width: 40vmax; height: 40vmax;
-    right: -10vmax; bottom: -12vmax;
-    background: radial-gradient(circle, rgba(56, 189, 248, .40), transparent 68%);
-    animation: drift2 30s ease-in-out infinite alternate;
+    width: 52vmax; height: 52vmax;
+    right: -16vmax; bottom: -18vmax;
+    background: radial-gradient(circle, rgba(48, 150, 224, .30), transparent 64%);
+    animation: drift2 42s ease-in-out infinite alternate;
   }
 
   .bg .b3 {
-    width: 30vmax; height: 30vmax;
-    right: 18vmax; top: -8vmax;
-    background: radial-gradient(circle, rgba(229, 181, 103, .30), transparent 70%);
-    animation: drift3 34s ease-in-out infinite alternate;
+    width: 38vmax; height: 38vmax;
+    right: 16vmax; top: -10vmax;
+    background: radial-gradient(circle, rgba(214, 164, 92, .20), transparent 66%);
+    animation: drift3 48s ease-in-out infinite alternate;
   }
 
-  @keyframes drift1 { to { transform: translate3d(6vmax, 5vmax, 0) scale(1.1); } }
-  @keyframes drift2 { to { transform: translate3d(-7vmax, -4vmax, 0) scale(1.08); } }
-  @keyframes drift3 { to { transform: translate3d(-4vmax, 6vmax, 0) scale(.92); } }
+  @keyframes drift1 { to { transform: translate3d(7vmax, 6vmax, 0) scale(1.12); } }
+  @keyframes drift2 { to { transform: translate3d(-8vmax, -5vmax, 0) scale(1.1); } }
+  @keyframes drift3 { to { transform: translate3d(-5vmax, 7vmax, 0) scale(.9); } }
 
+  /* wolno obracająca się „zorza” — daje ruch bez migotania plam */
+  .bg .aurora {
+    inset: -35%;
+    width: auto; height: auto;
+    border-radius: 0;
+    filter: blur(110px);
+    opacity: .38;
+    background: conic-gradient(from 0deg,
+      rgba(72, 214, 148, .22),
+      rgba(48, 150, 224, .20),
+      rgba(140, 120, 220, .14),
+      rgba(214, 164, 92, .16),
+      rgba(72, 214, 148, .22));
+    animation: spin 90s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* siatka techniczna, wygaszana radialnie */
+  .bg .grid {
+    inset: 0;
+    width: auto; height: auto;
+    border-radius: 0;
+    filter: none;
+    opacity: 1;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, .05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, .05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(circle at 50% 42%, #000 0%, transparent 68%);
+    -webkit-mask-image: radial-gradient(circle at 50% 42%, #000 0%, transparent 68%);
+  }
+
+  /* ziarno — usuwa „plastikowe” przejścia gradientów */
+  .bg .grain {
+    inset: 0;
+    width: auto; height: auto;
+    border-radius: 0;
+    filter: none;
+    opacity: .05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  /* winieta — przyciemnia brzegi, kieruje wzrok na kartę */
   .bg::after {
     content: "";
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, .035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, .035) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 72%);
-    -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 72%);
+    background:
+      radial-gradient(ellipse 75% 65% at 50% 45%, transparent 35%, rgba(4, 7, 10, .55) 100%);
   }
 
   /* ---------- scena ---------- */
@@ -549,9 +593,12 @@
 <body>
 
 <div class="bg" aria-hidden="true">
+  <span class="aurora"></span>
   <span class="b1"></span>
   <span class="b2"></span>
   <span class="b3"></span>
+  <span class="grid"></span>
+  <span class="grain"></span>
 </div>
 
 <div class="scene">
