@@ -418,6 +418,7 @@
   .techs {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-content: center;
     gap: 6px;
     list-style: none;
     margin: 0;
@@ -541,7 +542,7 @@
     .scene::before { inset: 5px 5px -6px 5px; border-radius: 20px; }
     .scene::after { inset: 10px 10px -12px 10px; border-radius: 20px; }
 
-    .card3d { aspect-ratio: 3 / 4; }
+    .card3d { aspect-ratio: 5 / 7; }
 
     .face {
       padding: 18px 16px 14px;
@@ -566,22 +567,44 @@
     .back-name { font-size: 13.5px; }
     .label { font-size: 9px; letter-spacing: .12em; margin-bottom: 6px; }
 
-    .back-layout { grid-template-columns: 1fr; gap: 14px; align-items: start; }
+    .back-layout {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: start;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 3px;
+      scrollbar-width: none;
+    }
+    .back-layout::-webkit-scrollbar { display: none; }
     .back-person h2 { font-size: 17px; margin-bottom: 6px; }
-    .back-tagline { font-size: 8.5px; margin-bottom: 12px; line-height: 1.45; }
-    .back-contact { gap: 7px; }
+    .back-tagline { font-size: 8.5px; margin-bottom: 10px; line-height: 1.4; }
+    .back-contact { gap: 6px; }
     .back-contact a { font-size: 10.5px; gap: 8px; }
     .back-contact .ci { width: 18px; height: 18px; }
     .back-contact .ci svg { width: 13px; height: 13px; }
     .tech-heading { margin-bottom: 4px; }
-    .techs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; }
-    .tech .ico { width: 24px; height: 24px; }
+    .techs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; max-width: 220px; margin: 0 auto; }
+    .tech .ico { width: 23px; height: 23px; }
 
     .certs { padding-top: 10px; gap: 5px; }
     .cert { font-size: 9px; padding: 3px 6px; }
 
     .foot { font-size: 9px; margin-top: 9px; padding-top: 8px; }
     .foot span:nth-child(2) { display: none; }
+  }
+
+  /* bardzo wąskie ekrany: karta wyższa, żeby nic nie ucinało */
+  @media (max-width: 380px) {
+    .card3d { aspect-ratio: 3 / 5; }
+    .face { padding: 16px 14px 12px; }
+    h1 { font-size: 21px; }
+    .role { font-size: 10.5px; }
+    .tagline { font-size: 14px; }
+    .back-person h2 { font-size: 15px; }
+    .back-contact a { font-size: 9.5px; }
+    .techs { max-width: 200px; }
+    .cert { font-size: 8px; padding: 3px 5px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
