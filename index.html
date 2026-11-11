@@ -128,8 +128,6 @@
     border: 1px solid rgba(255, 255, 255, .13);
     border-radius: 26px;
     background: transparent;
-    backdrop-filter: blur(7px) saturate(115%);
-    -webkit-backdrop-filter: blur(7px) saturate(115%);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, .08) inset,
       0 40px 100px -50px rgba(0, 0, 0, .9);
@@ -141,6 +139,17 @@
   .face.back {
     transform: rotateY(180deg);
     background: transparent;
+  }
+
+  /* nieaktywna strona znika w połowie obrotu — inaczej prześwituje przez drugą */
+  .face {
+    transition: opacity .30s linear 0s, visibility 0s linear 0s;
+  }
+
+  .face.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .30s linear, visibility 0s linear .42s;
   }
 
   /* ---------- pasek terminala ---------- */
@@ -458,6 +467,7 @@
       min-height: 0;
     }
     .face.back { transform: none !important; }
+    .face.is-hidden { opacity: 1 !important; visibility: visible !important; }
     .flip-btn { display: none; }
     .avatar { width: 58px; height: 58px; border-radius: 16px; font-size: 20px; }
     .head { margin-top: 20px; gap: 16px; }
@@ -602,15 +612,32 @@
 
   var przod = karta.querySelector(".front");
   var tyl = karta.querySelector(".back");
-  if (tyl) tyl.inert = true;
+  var mobile = window.matchMedia("(max-width: 760px)");
+
+  function ustawWidocznosc() {
+    if (!przod || !tyl) return;
+
+    // na wąskim ekranie obie strony są widoczne jedna pod drugą — nic nie ukrywamy
+    if (mobile.matches) {
+      przod.classList.remove("is-hidden");
+      tyl.classList.remove("is-hidden");
+      przod.inert = false;
+      tyl.inert = false;
+      return;
+    }
+
+    var obrocona = karta.classList.contains("is-flipped");
+    przod.classList.toggle("is-hidden", obrocona);
+    tyl.classList.toggle("is-hidden", !obrocona);
+    przod.inert = obrocona;
+    tyl.inert = !obrocona;
+  }
 
   function przelacz() {
-    var obrocona = karta.classList.toggle("is-flipped");
-    karta.setAttribute("aria-pressed", obrocona ? "true" : "false");
-    if (przod && tyl) {
-      przod.inert = obrocona;
-      tyl.inert = !obrocona;
-    }
+    if (mobile.matches) return;              // na dotyku nie ma obrotu
+    karta.classList.toggle("is-flipped");
+    karta.setAttribute("aria-pressed", karta.classList.contains("is-flipped") ? "true" : "false");
+    ustawWidocznosc();
   }
 
   karta.addEventListener("click", function (e) {
@@ -632,6 +659,12 @@
       przelacz();
     });
   }
+
+  if (mobile.addEventListener) {
+    mobile.addEventListener("change", ustawWidocznosc);
+  }
+
+  ustawWidocznosc();
 })();
 </script>
 </body>
