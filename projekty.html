@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projekty — Kacper Pietrusiewicz</title>
+<meta name="description" content="Trzy projekty: serwer Linux w Oracle Cloud, wdrożenie Zabbixa u klienta, integracja Zabbix z Ansible.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:48px 20px 80px;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  .back { font-size: 13px; color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  h1 { font-size: clamp(26px,4vw,38px); font-weight:900; letter-spacing:-.03em; margin:22px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 34px; }
+  article { border:1px solid var(--line); border-radius:16px; padding:24px 26px; margin-bottom:18px; background:rgba(255,255,255,.02); }
+  h2 { font-size:19px; margin:0 0 4px; letter-spacing:-.01em; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:0 0 14px; }
+  article p { margin:0 0 10px; color:#c9d0d8; }
+  ul { margin:0 0 10px; padding-left:20px; color:#c9d0d8; }
+  li { margin-bottom:4px; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+  .tag { font-size:11.5px; padding:3px 9px; border:1px solid var(--line); border-radius:999px; color:var(--muted); }
+  footer { margin-top:36px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="./">← wróć do wizytówki</a>
+  <h1>Projekty</h1>
+  <p class="lead">Trzy rzeczy, które zrobiłem od początku do końca — z tym, co poszło nie tak.</p>
+
+  <article>
+    <h2>Serwer Linux w Oracle Cloud</h2>
+    <p class="meta">2026 — do dziś · Oracle Linux 10, ARM</p>
+    <p>Własna maszyna w darmowym progu Oracle Cloud (A1.Flex, 2 OCPU, 12&nbsp;GB RAM, 100&nbsp;GB dysku). Utrzymuję ją sam: od konfiguracji po awarie.</p>
+    <ul>
+      <li>nginx jako reverse proxy przed Django i gunicornem, HTTP/2, gzip, osobne nagłówki cache dla zasobów wersjonowanych.</li>
+      <li>SELinux w trybie enforcing — po skopiowaniu katalogu do <code>/opt</code> nginx zwracał 403; przyczyną były etykiety, naprawa przez <code>restorecon</code>.</li>
+      <li>Timery systemd: metryki co minutę (7 dni), nocne kopie bazy i świata gry z sumami SHA-256 (14 dni).</li>
+      <li>Powiększenie dysku na żywo: <code>growpart</code>, <code>pvresize</code>, <code>lvextend</code> — bez restartu.</li>
+    </ul>
+    <div class="tags"><span class="tag">Oracle Linux</span><span class="tag">nginx</span><span class="tag">systemd</span><span class="tag">SELinux</span><span class="tag">Django</span></div>
+  </article>
+
+  <article>
+    <h2>Wdrożenie Zabbixa u klienta zewnętrznego</h2>
+    <p class="meta">2025–2026 · praktyki, UNIXsupport.PL</p>
+    <p>Samodzielna instalacja i uruchomienie monitoringu w firmie spoza mojej organizacji: ustalenie wymagań, konfiguracja hostów, szablonów i triggerów, przekazanie wiedzy użytkownikom.</p>
+    <ul>
+      <li>Konfiguracja agentów i szablonów pod konkretne usługi klienta.</li>
+      <li>Alerty i analiza logów — wskazywanie przyczyn, nie tylko objawów.</li>
+      <li>Dokumentacja wdrożenia: procedury i opis konfiguracji.</li>
+    </ul>
+    <div class="tags"><span class="tag">Zabbix</span><span class="tag">RHEL</span><span class="tag">monitoring</span></div>
+  </article>
+
+  <article>
+    <h2>ansible_zabbix — integracja monitornigu z Ansiblem</h2>
+    <p class="meta">2026 · repozytorium publiczne</p>
+    <p>Próba połączenia Zabbixa z Ansiblem tak, żeby konfiguracja hostów i agentów działy się z playbooka, a nie ręcznie. Projekt w trakcie rozwoju.</p>
+    <ul>
+      <li>Playbooki do instalacji i konfiguracji agentów.</li>
+      <li>Inventory generowane na podstawie hostów z Zabbixa.</li>
+      <li>Wnioski: co da się zautomatyzować, a co wymaga ręcznej decyzji.</li>
+    </ul>
+    <div class="tags"><span class="tag">Ansible</span><span class="tag">Zabbix</span><span class="tag">bash</span></div>
+  </article>
+
+  <footer>
+    Kacper Pietrusiewicz · <a href="mailto:kacper.pietrusiewicz@o2.pl">kacper.pietrusiewicz@o2.pl</a> · <a href="https://github.com/pietrusiewicz" target="_blank" rel="noopener">github.com/pietrusiewicz</a>
+  </footer>
+</div>
+</body>
+</html>
