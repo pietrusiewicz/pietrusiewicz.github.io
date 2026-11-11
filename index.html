@@ -846,13 +846,14 @@
   var spokojnie = window.matchMedia("(prefers-reduced-motion: reduce)");
   var ctx = cv.getContext("2d", { alpha: true });
   var ZNAKI = "01ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ:;=*+-<>/\|".split("");
-  var rozmiar = 15;
+  var rozmiar = 14;
   var kolumny = 0;
   var y = [];
   var dpr = 1;
 
   function ustaw() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = 1;   // efekt jest rozmyty, 2x nie daje nic poza kosztem
+
     var w = cv.clientWidth || window.innerWidth;
     var h = cv.clientHeight || window.innerHeight;
     cv.width = Math.floor(w * dpr);
@@ -868,14 +869,14 @@
   function klatka() {
     var w = cv.clientWidth, h = cv.clientHeight;
     // smuga: przyciemniamy zamiast czyścić
-    ctx.fillStyle = "rgba(8, 12, 17, 0.10)";
+    ctx.fillStyle = "rgba(8, 12, 17, 0.075)";
     ctx.fillRect(0, 0, w, h);
     ctx.font = rozmiar + "px 'JetBrains Mono', monospace";
     for (var i = 0; i < kolumny; i++) {
       var znak = ZNAKI[Math.floor(Math.random() * ZNAKI.length)];
       var px = i * rozmiar;
       var py = y[i] * rozmiar;
-      ctx.fillStyle = Math.random() > 0.975 ? "rgba(190, 255, 215, 0.85)" : "rgba(110, 231, 160, 0.55)";
+      ctx.fillStyle = Math.random() > 0.97 ? "rgba(205, 255, 225, 0.95)" : "rgba(110, 231, 160, 0.70)";
       ctx.fillText(znak, px, py);
       if (py > h && Math.random() > 0.972) {
         y[i] = Math.random() * -10;
@@ -889,7 +890,7 @@
   function petla(t) {
     requestAnimationFrame(petla);
     if (document.hidden || spokojnie.matches) return;
-    if (t - ostatnia < 55) return;   // ok. 18 klatek/s, nie 60
+    if (t - ostatnia < 70) return;   // ok. 14 klatek/s, nie 60
     ostatnia = t;
     klatka();
   }
