@@ -113,6 +113,24 @@
   }
 
   /* winieta — przyciemnia brzegi, kieruje wzrok na kartę */
+  .bg .bg-art {
+    position: absolute;
+    right: -1vw;
+    bottom: 4vh;
+    width: min(52vw, 760px);
+    color: rgba(110, 231, 160, .38);
+    pointer-events: none;
+  }
+
+  .matrix {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: .42;
+    pointer-events: none;
+  }
+
   .bg::after {
     content: "";
     position: absolute;
@@ -179,7 +197,7 @@
     padding: 40px 44px 30px;
     border: 1px solid rgba(255, 255, 255, .13);
     border-radius: 26px;
-    background: rgba(13, 18, 25, .88);
+    background: rgba(13, 18, 25, .82);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, .08) inset,
       0 40px 100px -50px rgba(0, 0, 0, .9);
@@ -190,7 +208,7 @@
 
   .face.back {
     transform: rotateY(180deg);
-    background: rgba(13, 18, 25, .88);
+    background: rgba(13, 18, 25, .82);
   }
 
   /* strony nie są wyłączane — o tym, którą widać, decyduje backface-visibility;
@@ -310,6 +328,7 @@
     color: #fff;
     outline: none;
   }
+
 
   /* ---------- tył ---------- */
   /* tył: dwie kolumny — osoba i kontakt po lewej, technologie po prawej */
@@ -551,6 +570,11 @@
     .avatar { width: 68px; height: 68px; border-radius: 18px; font-size: 23px; }
   }
 
+  @media (max-width: 860px) {
+    .bg .bg-art { width: 96vw; right: -26vw; bottom: 8vh; color: rgba(110, 231, 160, .22); }
+    .matrix { opacity: .32; }
+  }
+
   /* ---------- mobile: ta sama karta, w pionie ---------- */
   @media (max-width: 760px) {
     body { padding: 16px 12px; font-size: 15px; }
@@ -636,7 +660,45 @@
   <span class="b2"></span>
   <span class="b3"></span>
   <span class="grid"></span>
+  <canvas id="matrix" class="matrix" aria-hidden="true"></canvas>
   <span class="grain"></span>
+        <svg class="bg-art" viewBox="0 0 420 300" fill="none" aria-hidden="true" focusable="false">
+        <g stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- szafa serwerowa -->
+          <rect x="264" y="44" width="124" height="50" rx="7"/>
+          <path d="M264 69h124"/>
+          <rect x="264" y="96" width="124" height="50" rx="7"/>
+          <path d="M264 121h124"/>
+          <rect x="264" y="148" width="124" height="50" rx="7"/>
+          <path d="M264 173h124"/>
+          <path d="M278 198v16M374 198v16"/>
+          <!-- laptop -->
+          <rect x="44" y="112" width="116" height="72" rx="7"/>
+          <path d="M28 206h148l9 14H19z"/>
+          <path d="M56 128h14M56 140h34M56 152h24"/>
+          <path d="M56 166h10"/>
+          <!-- kabel laptop -> szafa -->
+          <path d="M172 214c26 12 48 4 68-14"/>
+          <!-- pingwin -->
+          <path d="M212 150c-18 0-29 14-29 32v26c0 9 6 15 15 15h28c9 0 15-6 15-15v-26c0-18-11-32-29-32Z"/>
+          <path d="M212 174c-10 0-17 8-17 19v13c0 5 3 8 8 8h18c5 0 8-3 8-8v-13c0-11-7-19-17-19Z"/>
+          <circle cx="204" cy="159" r="2.4" fill="currentColor" stroke="none"/>
+          <circle cx="220" cy="159" r="2.4" fill="currentColor" stroke="none"/>
+          <path d="M206 166h12l-6 7z" fill="currentColor" stroke="none"/>
+          <path d="M185 172c-5 9-5 20-1 29M239 172c5 9 5 20 1 29"/>
+          <path d="M204 223v8h-8M220 223v8h8"/>
+        </g>
+        <g fill="currentColor" opacity=".9">
+          <circle cx="278" cy="57" r="2.6"/>
+          <circle cx="288" cy="57" r="2.6"/>
+          <circle cx="278" cy="109" r="2.6"/>
+          <circle cx="288" cy="109" r="2.6"/>
+          <circle cx="278" cy="161" r="2.6"/>
+          <circle cx="288" cy="161" r="2.6"/>
+        </g>
+      </svg>
+
+
 </div>
 
 <div class="scene">
@@ -661,6 +723,7 @@
       <p class="tagline">
         Serwery Linux: konfiguracja, monitoring i kopie zapasowe.
       </p>
+
 
       <div class="front-contact">
         <span class="fc-label">napisz</span>
@@ -773,6 +836,71 @@
   });
 
   ustawStan();
+})();
+
+/* ---------- deszcz znaków w tle ---------- */
+(function () {
+  var cv = document.getElementById("matrix");
+  if (!cv) return;
+
+  var spokojnie = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var ctx = cv.getContext("2d", { alpha: true });
+  var ZNAKI = "01ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ:;=*+-<>/\|".split("");
+  var rozmiar = 15;
+  var kolumny = 0;
+  var y = [];
+  var dpr = 1;
+
+  function ustaw() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var w = cv.clientWidth || window.innerWidth;
+    var h = cv.clientHeight || window.innerHeight;
+    cv.width = Math.floor(w * dpr);
+    cv.height = Math.floor(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    kolumny = Math.ceil(w / rozmiar);
+    y = [];
+    for (var i = 0; i < kolumny; i++) {
+      y.push(Math.random() * -h / 16);
+    }
+  }
+
+  function klatka() {
+    var w = cv.clientWidth, h = cv.clientHeight;
+    // smuga: przyciemniamy zamiast czyścić
+    ctx.fillStyle = "rgba(8, 12, 17, 0.10)";
+    ctx.fillRect(0, 0, w, h);
+    ctx.font = rozmiar + "px 'JetBrains Mono', monospace";
+    for (var i = 0; i < kolumny; i++) {
+      var znak = ZNAKI[Math.floor(Math.random() * ZNAKI.length)];
+      var px = i * rozmiar;
+      var py = y[i] * rozmiar;
+      ctx.fillStyle = Math.random() > 0.975 ? "rgba(190, 255, 215, 0.85)" : "rgba(110, 231, 160, 0.55)";
+      ctx.fillText(znak, px, py);
+      if (py > h && Math.random() > 0.972) {
+        y[i] = Math.random() * -10;
+      } else {
+        y[i] += 1;
+      }
+    }
+  }
+
+  var ostatnia = 0;
+  function petla(t) {
+    requestAnimationFrame(petla);
+    if (document.hidden || spokojnie.matches) return;
+    if (t - ostatnia < 55) return;   // ok. 18 klatek/s, nie 60
+    ostatnia = t;
+    klatka();
+  }
+
+  ustaw();
+  window.addEventListener("resize", ustaw);
+  if (!spokojnie.matches) {
+    ctx.fillStyle = "rgba(8, 12, 17, 1)";
+    ctx.fillRect(0, 0, cv.clientWidth, cv.clientHeight);
+    requestAnimationFrame(petla);
+  }
 })();
 </script>
 </body>
