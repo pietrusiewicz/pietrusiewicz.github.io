@@ -292,55 +292,63 @@
 
 
 
-  /* ---------- pasek polecenia (klikany) ---------- */
-  .prompt.command {
+  /* ---------- chrom okna ---------- */
+  .chrome {
     display: flex;
     align-items: center;
-    gap: 10px;
-    width: 100%;
-    margin: 0;
-    padding: 0 0 18px;
-    border: 0;
+    gap: 9px;
+    padding-bottom: 14px;
     border-bottom: 1px solid var(--line);
-    background: none;
+    font-size: 14px;
     color: var(--muted);
+  }
+
+  .ch-user { color: var(--accent); }
+  .ch-path { color: var(--muted); margin-left: -9px; }
+
+  /* ---------- wpisane polecenie (klikane) ---------- */
+  .cmd-line {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    margin: 22px 0 12px;
+    padding: 0;
+    border: 0;
+    background: none;
     font-size: 14.5px;
     text-align: left;
-    cursor: pointer;
-    transition: color .16s ease, border-color .16s ease;
-  }
-
-  .prompt.command:hover, .prompt.command:focus-visible {
     color: var(--ink);
-    border-color: rgba(110, 231, 160, .45);
-    outline: none;
+    cursor: pointer;
   }
 
-  .cmd-user { color: var(--accent); }
-  .cmd-path { color: var(--muted); margin-left: -9px; }
+  .cmd-line .cmd-user { color: var(--accent); }
+  .cmd-line .cmd-path { color: var(--muted); }
+
+  .cmd-text { margin-left: 8px; }
+
   .cmd-text {
     color: #e9ecef;
     border-bottom: 1px dashed transparent;
     transition: border-color .16s ease;
   }
-  .prompt.command:hover .cmd-text { border-bottom-color: rgba(110, 231, 160, .55); }
+
+  .cmd-line:hover .cmd-text, .cmd-line:focus-visible .cmd-text {
+    border-bottom-color: rgba(110, 231, 160, .6);
+  }
+
+  .cmd-line:focus-visible { outline: none; }
 
   .cmd-hint {
     margin-left: auto;
-    padding: 3px 9px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
     font-size: 10px;
     letter-spacing: .1em;
     text-transform: uppercase;
-    color: var(--muted);
-    transition: color .16s ease, border-color .16s ease, background .16s ease;
+    color: rgba(255, 255, 255, .22);
+    transition: color .16s ease;
   }
-  .prompt.command:hover .cmd-hint {
-    color: #07130d;
-    background: var(--accent);
-    border-color: transparent;
-  }
+
+  .cmd-line:hover .cmd-hint { color: var(--accent); }
 
   /* ---------- cat /etc/os-release ---------- */
   .view[hidden] { display: none; }
@@ -411,7 +419,7 @@
   .term-group {
     display: flex;
     flex-direction: column;
-    margin: 26px 0 0;
+    margin: 0;
     flex: 1 1 auto;
     min-width: 0;
   }
@@ -433,7 +441,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 28px 0 0;
+    margin: auto 0 0;
   }
 
   .fc-label {
@@ -855,23 +863,22 @@
 
     <!-- ============ PRZÓD ============ -->
     <section class="face front" aria-label="Przód wizytówki">
-      <button class="prompt command" id="cmd" type="button"
-              aria-label="Zmień widok: cat /etc/os-release lub neofetch">
-        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="cmd-user">kacper@linux</span><span class="cmd-path">:~$</span>
-        <span class="cmd-text" id="cmd-text">cat /etc/os-release</span>
-        <span class="cmd-hint" aria-hidden="true">neofetch ↵</span>
-      </button>
-
-      <div class="prompt2" aria-hidden="true">
-        <span class="p2-user">kacper@linux</span><span class="p2-path">:~$</span>
-        <span class="cursor"></span>
+      <div class="chrome" aria-hidden="true">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="ch-user">kacper@linux</span><span class="ch-path">:~$</span>
       </div>
 
       <div class="term-group">
+        <button class="cmd-line" id="cmd" type="button"
+                aria-label="Zmień widok: cat /etc/os-release lub neofetch">
+          <span class="cmd-user">kacper@linux</span><span class="cmd-path">:~$</span>
+          <span class="cmd-text" id="cmd-text">cat /etc/os-release</span>
+          <span class="cmd-hint" aria-hidden="true">neofetch →</span>
+        </button>
+
         <div class="view" id="view-osrel">
           <dl class="osrel">
-            <div class="row name-row"><dt>NAME</dt><dd><span class="eq">=</span><span class="vr">"Kacper Pietrusiewicz"</span></dd></div>
+            <div class="row"><dt>NAME</dt><dd><span class="eq">=</span><span class="vr">"Kacper Pietrusiewicz"</span></dd></div>
             <div class="row"><dt>ROLE</dt><dd><span class="eq">=</span><span class="vr">"administrator systemów Linux"</span></dd></div>
             <div class="row"><dt>SPEC</dt><dd><span class="eq">=</span><span class="vr">"wsparcie IT · monitoring · automatyzacja"</span></dd></div>
             <div class="row"><dt>STACK</dt><dd><span class="eq">=</span><span class="vr">"RHEL · Oracle Linux · Zabbix · Ansible"</span></dd></div>
@@ -1037,7 +1044,7 @@
     txt.textContent = pokazNeofetch ? "neofetch" : "cat /etc/os-release";
     // podpowiedź pokazuje zawsze drugą opcję
     var hint = cmd.querySelector(".cmd-hint");
-    if (hint) hint.textContent = (pokazNeofetch ? "os-release" : "neofetch") + " ↵";
+    if (hint) hint.textContent = (pokazNeofetch ? "os-release" : "neofetch") + " →";
     cmd.setAttribute("aria-pressed", pokazNeofetch ? "true" : "false");
   });
 })();
