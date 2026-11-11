@@ -292,11 +292,136 @@
 
 
 
+  /* ---------- pasek polecenia (klikany) ---------- */
+  .prompt.command {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+    padding: 0 0 18px;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    color: var(--muted);
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: color .16s ease, border-color .16s ease;
+  }
+
+  .prompt.command:hover, .prompt.command:focus-visible {
+    color: var(--ink);
+    border-color: rgba(110, 231, 160, .45);
+    outline: none;
+  }
+
+  .cmd-user { color: var(--accent); }
+  .cmd-path { color: var(--muted); margin-left: -9px; }
+  .cmd-text {
+    color: #e9ecef;
+    border-bottom: 1px dashed transparent;
+    transition: border-color .16s ease;
+  }
+  .prompt.command:hover .cmd-text { border-bottom-color: rgba(110, 231, 160, .55); }
+
+  .cmd-hint {
+    margin-left: auto;
+    padding: 3px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    transition: color .16s ease, border-color .16s ease, background .16s ease;
+  }
+  .prompt.command:hover .cmd-hint {
+    color: #07130d;
+    background: var(--accent);
+    border-color: transparent;
+  }
+
+  /* ---------- cat /etc/os-release ---------- */
+  .view[hidden] { display: none; }
+
+  .osrel { display: grid; gap: 8px; margin: 0; }
+
+  .osrel .row {
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0;
+  }
+
+  .osrel dt {
+    color: var(--accent);
+    font-size: 13px;
+    letter-spacing: .06em;
+  }
+
+  .osrel dd { margin: 0; font-size: clamp(15px, 1.55vw, 17px); color: #dbe1e8; }
+
+  .osrel .eq { color: rgba(255, 255, 255, .30); }
+  .osrel .vr { color: #e6ebf1; }
+
+  .name-row .vr { font-size: clamp(19px, 2.1vw, 24px); font-weight: 700; color: #fff; }
+
+  /* ---------- neofetch ---------- */
+  .nf {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(20px, 3vw, 44px);
+  }
+
+  .nf-logo { color: rgba(110, 231, 160, .85); }
+  .nf-logo svg { width: 100%; height: auto; display: block; }
+
+  .nf-title {
+    font-size: clamp(17px, 1.9vw, 21px);
+    font-weight: 700;
+    letter-spacing: -.01em;
+    margin-bottom: 2px;
+  }
+  .nf-user { color: var(--accent); }
+  .nf-at { color: var(--muted); }
+  .nf-host { color: var(--accent); }
+
+  .nf-sep {
+    color: rgba(255, 255, 255, .28);
+    letter-spacing: .04em;
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  .nf-info { min-width: 0; }
+
+  .nf-row {
+    display: grid;
+    grid-template-columns: 74px 1fr;
+    gap: 10px;
+    font-size: clamp(12.5px, 1.3vw, 14.5px);
+    line-height: 1.5;
+  }
+
+  .nf-k { color: var(--accent); }
+  .nf-v { color: #d5dbe3; }
+
+  .term-group {
+    display: flex;
+    flex-direction: column;
+    margin: auto 0;
+    min-width: 0;
+  }
+
+  .view { min-width: 0; }
+
   .front-contact {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 26px 0 auto;
+    margin: 28px 0 0;
   }
 
   .fc-label {
@@ -597,6 +722,19 @@
     .dots i { width: 8px; height: 8px; }
     .cursor { width: 6px; height: 12px; }
 
+    .osrel { gap: 5px; }
+    .osrel .row { grid-template-columns: 86px 1fr; gap: 10px; }
+    .osrel dt { font-size: 10px; }
+    .osrel dd { font-size: 13px; }
+    .name-row dd { font-size: 17px; }
+    .prompt2 { margin-top: 16px; font-size: 12px; }
+
+    .nf { grid-template-columns: 76px minmax(0, 1fr); gap: 14px; }
+    .nf-title { font-size: 15px; }
+    .nf-sep { font-size: 11px; margin-bottom: 6px; }
+    .nf-row { grid-template-columns: 58px 1fr; gap: 8px; font-size: 10.5px; line-height: 1.45; }
+    .cmd-hint { display: none; }
+
     .head { margin-top: auto; gap: 13px; }
     .avatar { width: 52px; height: 52px; border-radius: 14px; font-size: 18px; }
     h1 { font-size: 25px; letter-spacing: -.03em; }
@@ -706,38 +844,71 @@
 
     <!-- ============ PRZÓD ============ -->
     <section class="face front" aria-label="Przód wizytówki">
-      <div class="prompt" aria-hidden="true">
-        <span class="dots"><i></i><i></i><i></i></span>
-        <span><b>kacper@linux</b>:~$ whoami</span>
-        <span class="cursor"></span>
-      </div>
+      <button class="prompt command" id="cmd" type="button"
+              aria-label="Zmień widok: cat /etc/os-release lub neofetch">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="cmd-user">kacper@linux</span><span class="cmd-path">:~$</span>
+        <span class="cmd-text" id="cmd-text">cat /etc/os-release</span>
+        <span class="cmd-hint" aria-hidden="true">neofetch ↵</span>
+      </button>
 
-      <div class="head">
-        <div class="avatar" aria-hidden="true">KP</div>
-        <div>
-          <h1>Kacper Pietrusiewicz</h1>
-          <p class="role">administrator systemów <span>Linux</span> &middot; wsparcie IT &middot; automatyzacja</p>
+      <div class="term-group">
+        <div class="view" id="view-osrel">
+          <dl class="osrel">
+            <div class="row name-row"><dt>NAME</dt><dd><span class="eq">=</span><span class="vr">"Kacper Pietrusiewicz"</span></dd></div>
+            <div class="row"><dt>ROLE</dt><dd><span class="eq">=</span><span class="vr">"administrator systemów Linux"</span></dd></div>
+            <div class="row"><dt>SPEC</dt><dd><span class="eq">=</span><span class="vr">"wsparcie IT · monitoring · automatyzacja"</span></dd></div>
+            <div class="row"><dt>STACK</dt><dd><span class="eq">=</span><span class="vr">"RHEL · Oracle Linux · Zabbix · Ansible"</span></dd></div>
+            <div class="row"><dt>CERTS</dt><dd><span class="eq">=</span><span class="vr">"RH199 · RH294 · OCI (w trakcie)"</span></dd></div>
+            <div class="row"><dt>LOCATION</dt><dd><span class="eq">=</span><span class="vr">"Węgorzewo, Polska"</span></dd></div>
+            <div class="row"><dt>CONTACT</dt><dd><span class="eq">=</span><span class="vr">"kacper.pietrusiewicz@o2.pl"</span></dd></div>
+            <div class="row"><dt>WEBSITE</dt><dd><span class="eq">=</span><span class="vr">"pietrusiewicz.github.io"</span></dd></div>
+          </dl>
+        </div>
+
+        <div class="view" id="view-neofetch" hidden>
+          <div class="nf">
+            <div class="nf-logo" aria-hidden="true">
+              <svg viewBox="0 0 120 140" fill="none">
+                <g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M60 12c-24 0-38 18-38 42v34c0 12 8 20 20 20h36c12 0 20-8 20-20V54c0-24-14-42-38-42Z"/>
+                  <path d="M60 46c-13 0-22 11-22 25v17c0 7 4 11 11 11h22c7 0 11-4 11-11V71c0-14-9-25-22-25Z"/>
+                  <circle cx="50" cy="32" r="3.4" fill="currentColor" stroke="none"/>
+                  <circle cx="70" cy="32" r="3.4" fill="currentColor" stroke="none"/>
+                  <path d="M55 41h10l-5 8z" fill="currentColor" stroke="none"/>
+                  <path d="M22 60c-6 12-6 26-1 38M98 60c6 12 6 26 1 38"/>
+                  <path d="M48 108v10h-11M72 108v10h11"/>
+                </g>
+              </svg>
+            </div>
+            <div class="nf-info">
+              <div class="nf-title"><span class="nf-user">kacper</span><span class="nf-at">@</span><span class="nf-host">linux</span></div>
+              <div class="nf-sep">-----------</div>
+              <div class="nf-row"><span class="nf-k">OS</span><span class="nf-v">Oracle Linux 10 (RHEL)</span></div>
+              <div class="nf-row"><span class="nf-k">Host</span><span class="nf-v">Oracle Cloud · A1.Flex, 2 OCPU, 12 GB</span></div>
+              <div class="nf-row"><span class="nf-k">Shell</span><span class="nf-v">bash</span></div>
+              <div class="nf-row"><span class="nf-k">Role</span><span class="nf-v">administrator systemów Linux</span></div>
+              <div class="nf-row"><span class="nf-k">Stack</span><span class="nf-v">Zabbix · Ansible · nginx · systemd · SELinux</span></div>
+              <div class="nf-row"><span class="nf-k">Certs</span><span class="nf-v">RH199 · RH294 · OCI (w trakcie)</span></div>
+              <div class="nf-row"><span class="nf-k">Locale</span><span class="nf-v">pl_PL · Węgorzewo, Polska</span></div>
+              <div class="nf-row"><span class="nf-k">Contact</span><span class="nf-v">kacper.pietrusiewicz@o2.pl</span></div>
+              <div class="nf-row"><span class="nf-k">Site</span><span class="nf-v">pietrusiewicz.github.io</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="prompt2" aria-hidden="true">
+          <span class="p2-user">kacper@linux</span><span class="p2-path">:~$</span>
+          <span class="cursor"></span>
+        </div>
+
+        <div class="front-contact">
+          <span class="fc-label">napisz</span>
+          <a class="fc" href="mailto:kacper.pietrusiewicz@o2.pl" aria-label="Wyślij e-mail" title="kacper.pietrusiewicz@o2.pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m3 6.5 9 7 9-7"/></svg></a>
+          <a class="fc" href="https://discord.com/users/500957140643610634" target="_blank" rel="noopener" aria-label="Discord" title="Discord: robloksowski"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
+          <a class="fc" href="https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="linkedin.com/in/kacper-pietrusiewicz"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.24 8.5h4.5V24H.24V8.5Zm7.98 0h4.3v2.1h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 2.9 5.4 6.7V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7s-2.6 1.7-2.6 3.6V24h-4.5V8.5Z"/></svg></a>
         </div>
       </div>
-
-      <p class="tagline">
-        Serwery Linux: konfiguracja, monitoring i kopie zapasowe.
-      </p>
-
-
-      <div class="front-contact">
-        <span class="fc-label">napisz</span>
-        <a class="fc" href="mailto:kacper.pietrusiewicz@o2.pl" aria-label="Wyślij e-mail" title="kacper.pietrusiewicz@o2.pl">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m3 6.5 9 7 9-7"/></svg>
-        </a>
-        <a class="fc" href="https://discord.com/users/500957140643610634" target="_blank" rel="noopener" aria-label="Discord" title="Discord: robloksowski">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
-        </a>
-        <a class="fc" href="https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="linkedin.com/in/kacper-pietrusiewicz">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.24 8.5h4.5V24H.24V8.5Zm7.98 0h4.3v2.1h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 2.9 5.4 6.7V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7s-2.6 1.7-2.6 3.6V24h-4.5V8.5Z"/></svg>
-        </a>
-      </div>
-
     </section>
 
     <!-- ============ TYŁ ============ -->
@@ -836,6 +1007,28 @@
   });
 
   ustawStan();
+})();
+
+/* ---------- przełączanie cat /etc/os-release <-> neofetch ---------- */
+(function () {
+  var cmd = document.getElementById("cmd");
+  var txt = document.getElementById("cmd-text");
+  var a = document.getElementById("view-osrel");
+  var b = document.getElementById("view-neofetch");
+  if (!cmd || !a || !b) return;
+
+  var pokazNeofetch = false;
+
+  cmd.addEventListener("click", function () {
+    pokazNeofetch = !pokazNeofetch;
+    a.hidden = pokazNeofetch;
+    b.hidden = !pokazNeofetch;
+    txt.textContent = pokazNeofetch ? "neofetch" : "cat /etc/os-release";
+    // podpowiedź pokazuje zawsze drugą opcję
+    var hint = cmd.querySelector(".cmd-hint");
+    if (hint) hint.textContent = (pokazNeofetch ? "os-release" : "neofetch") + " ↵";
+    cmd.setAttribute("aria-pressed", pokazNeofetch ? "true" : "false");
+  });
 })();
 
 /* ---------- deszcz znaków w tle ---------- */
