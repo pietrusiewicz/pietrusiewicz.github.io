@@ -437,6 +437,100 @@
   .p2-user { color: var(--accent); }
   .p2-path { color: var(--muted); }
 
+  /* ---------- shell ---------- */
+  .chrome { position: relative; }
+
+  .lang {
+    margin-left: auto;
+    padding: 3px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-size: 10.5px;
+    letter-spacing: .12em;
+    cursor: pointer;
+    transition: color .16s ease, border-color .16s ease;
+  }
+  .lang:hover, .lang:focus-visible { color: var(--accent); border-color: rgba(110,231,160,.5); outline: none; }
+
+  .shell {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 18px;
+  }
+
+  .out {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  .out::-webkit-scrollbar { width: 6px; }
+  .out::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 3px; }
+
+  .line { white-space: pre-wrap; word-break: break-word; }
+  .line + .line { margin-top: 2px; }
+
+  .p-user { color: var(--accent); }
+  .p-path { color: var(--muted); }
+  .p-cmd { color: #fff; }
+  .c-key { color: var(--accent); }
+  .c-dim { color: var(--muted); }
+  .c-val { color: #dbe1e8; }
+  .c-err { color: #e5b567; }
+
+  .out a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  .out a:hover { border-bottom-color: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .chip {
+    padding: 3px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: none;
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 11.5px;
+    cursor: pointer;
+    transition: color .16s ease, border-color .16s ease;
+  }
+  .chip:hover, .chip:focus-visible { color: var(--accent); border-color: rgba(110,231,160,.5); outline: none; }
+
+  .cmd-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid transparent;
+    font-size: 14.5px;
+  }
+
+  .ps1 { color: var(--accent); white-space: nowrap; }
+
+  .cmd-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14.5px;
+    caret-color: var(--accent);
+  }
+  .cmd-input:focus { outline: none; }
+
+  .cmd-form .cursor { margin-left: -4px; }
+
   .front-contact {
     display: flex;
     align-items: center;
@@ -862,70 +956,29 @@
   <div class="card3d" id="karta" tabindex="0" role="button" aria-label="Wizytówka — kliknij lub naciśnij Enter, aby obrócić" aria-pressed="false">
 
     <!-- ============ PRZÓD ============ -->
-    <section class="face front" aria-label="Przód wizytówki">
-      <div class="chrome" aria-hidden="true">
-        <span class="dots"><i></i><i></i><i></i></span>
+    <section class="face front" aria-label="Terminal">
+      <div class="chrome">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="ch-user">kacper@linux</span><span class="ch-path">:~$</span>
+        <button class="lang" id="lang" type="button" aria-label="Zmień język">EN</button>
       </div>
 
-      <div class="term-group">
-        <button class="cmd-line" id="cmd" type="button"
-                aria-label="Zmień widok: cat /etc/os-release lub neofetch">
-          <span class="cmd-user">kacper@linux</span><span class="cmd-path">:~$</span>
-          <span class="cmd-text" id="cmd-text">neofetch</span>
-          <span class="cmd-hint" aria-hidden="true">os-release →</span>
-        </button>
+      <div class="shell" id="shell">
+        <div class="out" id="out"></div>
 
-        <div class="view" id="view-osrel" hidden>
-          <dl class="osrel">
-            <div class="row"><dt>NAME</dt><dd><span class="eq">=</span><span class="vr">"Kacper Pietrusiewicz"</span></dd></div>
-            <div class="row"><dt>ROLE</dt><dd><span class="eq">=</span><span class="vr">"administrator systemów Linux"</span></dd></div>
-            <div class="row"><dt>SPEC</dt><dd><span class="eq">=</span><span class="vr">"wsparcie IT, monitoring, automatyzacja"</span></dd></div>
-            <div class="row"><dt>STACK</dt><dd><span class="eq">=</span><span class="vr">"RHEL, Oracle Linux, Zabbix, Ansible"</span></dd></div>
-            <div class="row"><dt>CERTS</dt><dd><span class="eq">=</span><span class="vr">"RH199, RH294, OCI (w trakcie)"</span></dd></div>
-            <div class="row"><dt>LOCATION</dt><dd><span class="eq">=</span><span class="vr">"Węgorzewo, Polska"</span></dd></div>
-            <div class="row"><dt>CONTACT</dt><dd><span class="eq">=</span><span class="vr">"kacper.pietrusiewicz@o2.pl"</span></dd></div>
-            <div class="row"><dt>WEBSITE</dt><dd><span class="eq">=</span><span class="vr">"pietrusiewicz.github.io"</span></dd></div>
-          </dl>
-        </div>
+        <form class="cmd-form" id="cmd-form" autocomplete="off">
+          <label class="ps1" for="cmd-input">kacper@linux:~$</label>
+          <input id="cmd-input" class="cmd-input" type="text" spellcheck="false"
+                 autocapitalize="off" autocorrect="off" aria-label="Wpisz polecenie — wpisz help">
+          <span class="cursor" aria-hidden="true"></span>
+        </form>
+      </div>
 
-        <div class="view" id="view-neofetch">
-          <div class="nf">
-            <div class="nf-logo" aria-hidden="true">
-              <svg viewBox="0 0 120 140" fill="none">
-                <g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M60 12c-24 0-38 18-38 42v34c0 12 8 20 20 20h36c12 0 20-8 20-20V54c0-24-14-42-38-42Z"/>
-                  <path d="M60 46c-13 0-22 11-22 25v17c0 7 4 11 11 11h22c7 0 11-4 11-11V71c0-14-9-25-22-25Z"/>
-                  <circle cx="50" cy="32" r="3.4" fill="currentColor" stroke="none"/>
-                  <circle cx="70" cy="32" r="3.4" fill="currentColor" stroke="none"/>
-                  <path d="M55 41h10l-5 8z" fill="currentColor" stroke="none"/>
-                  <path d="M22 60c-6 12-6 26-1 38M98 60c6 12 6 26 1 38"/>
-                  <path d="M48 108v10h-11M72 108v10h11"/>
-                </g>
-              </svg>
-            </div>
-            <div class="nf-info">
-              <div class="nf-title"><span class="nf-user">kacper</span><span class="nf-at">@</span><span class="nf-host">linux</span></div>
-              <div class="nf-sep">-----------</div>
-              <div class="nf-row"><span class="nf-k">OS</span><span class="nf-v">Oracle Linux 10 (RHEL)</span></div>
-              <div class="nf-row"><span class="nf-k">Host</span><span class="nf-v">Oracle Cloud, A1.Flex, 2 OCPU, 12 GB</span></div>
-              <div class="nf-row"><span class="nf-k">Shell</span><span class="nf-v">bash</span></div>
-              <div class="nf-row"><span class="nf-k">Role</span><span class="nf-v">administrator systemów Linux</span></div>
-              <div class="nf-row"><span class="nf-k">Stack</span><span class="nf-v">Zabbix, Ansible, nginx, systemd, SELinux</span></div>
-              <div class="nf-row"><span class="nf-k">Certs</span><span class="nf-v">RH199, RH294, OCI (w trakcie)</span></div>
-              <div class="nf-row"><span class="nf-k">Locale</span><span class="nf-v">pl_PL, Węgorzewo, Polska</span></div>
-              <div class="nf-row"><span class="nf-k">Contact</span><span class="nf-v">kacper.pietrusiewicz@o2.pl</span></div>
-              <div class="nf-row"><span class="nf-k">Site</span><span class="nf-v">pietrusiewicz.github.io</span></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="front-contact">
-          <span class="fc-label">napisz</span>
-          <a class="fc" href="mailto:kacper.pietrusiewicz@o2.pl" aria-label="Wyślij e-mail" title="kacper.pietrusiewicz@o2.pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m3 6.5 9 7 9-7"/></svg></a>
-          <a class="fc" href="https://discord.com/users/500957140643610634" target="_blank" rel="noopener" aria-label="Discord" title="Discord: robloksowski"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
-          <a class="fc" href="https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="linkedin.com/in/kacper-pietrusiewicz"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.24 8.5h4.5V24H.24V8.5Zm7.98 0h4.3v2.1h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 2.9 5.4 6.7V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7s-2.6 1.7-2.6 3.6V24h-4.5V8.5Z"/></svg></a>
-        </div>
+      <div class="front-contact">
+        <span class="fc-label" id="fc-label">napisz</span>
+        <a class="fc" href="mailto:kacper.pietrusiewicz@o2.pl" aria-label="E-mail" title="kacper.pietrusiewicz@o2.pl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><path d="m3 6.5 9 7 9-7"/></svg></a>
+        <a class="fc" href="https://discord.com/users/500957140643610634" target="_blank" rel="noopener" aria-label="Discord" title="Discord: robloksowski"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg></a>
+        <a class="fc" href="https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5A2.5 2.5 0 1 1 0 3.5a2.5 2.5 0 0 1 4.98 0ZM.24 8.5h4.5V24H.24V8.5Zm7.98 0h4.3v2.1h.06c.6-1.1 2.1-2.3 4.3-2.3 4.6 0 5.4 2.9 5.4 6.7V24h-4.5v-6.9c0-1.6 0-3.7-2.3-3.7s-2.6 1.7-2.6 3.6V24h-4.5V8.5Z"/></svg></a>
       </div>
     </section>
 
@@ -1012,13 +1065,13 @@
   }
 
   karta.addEventListener("click", function (e) {
-    if (e.target.closest("a, button")) return;
+    if (e.target.closest("a, button, input, .shell, .front-contact")) return;
     przelacz();
   });
 
   karta.addEventListener("keydown", function (e) {
     if (e.key === "Enter" || e.key === " ") {
-      if (e.target.closest("a, button")) return;
+      if (e.target.closest("a, button, input, .shell")) return;
       e.preventDefault();
       przelacz();
     }
@@ -1027,26 +1080,334 @@
   ustawStan();
 })();
 
-/* ---------- przełączanie cat /etc/os-release <-> neofetch ---------- */
+/* ---------- shell ---------- */
 (function () {
-  var cmd = document.getElementById("cmd");
-  var txt = document.getElementById("cmd-text");
-  var a = document.getElementById("view-osrel");
-  var b = document.getElementById("view-neofetch");
-  if (!cmd || !a || !b) return;
+  var out = document.getElementById("out");
+  var form = document.getElementById("cmd-form");
+  var input = document.getElementById("cmd-input");
+  var langBtn = document.getElementById("lang");
+  var shell = document.getElementById("shell");
+  var fcLabel = document.getElementById("fc-label");
+  if (!out || !form || !input) return;
 
-  var pokazNeofetch = true;
+  var lang = "pl";
+  var hist = [];
+  var histIdx = -1;
 
-  cmd.addEventListener("click", function () {
-    pokazNeofetch = !pokazNeofetch;
-    a.hidden = pokazNeofetch;
-    b.hidden = !pokazNeofetch;
-    txt.textContent = pokazNeofetch ? "neofetch" : "cat /etc/os-release";
-    // podpowiedź pokazuje zawsze drugą opcję
-    var hint = cmd.querySelector(".cmd-hint");
-    if (hint) hint.textContent = (pokazNeofetch ? "os-release" : "neofetch") + " →";
-    cmd.setAttribute("aria-pressed", pokazNeofetch ? "true" : "false");
+  var T = {
+    pl: {
+      napisz: "napisz",
+      hello: "Wpisz <b>help</b>, żeby zobaczyć dostępne polecenia.",
+      help: [
+        ["neofetch", "kim jestem, jednym spojrzeniem"],
+        ["cat /etc/os-release", "dane w formacie pliku systemowego"],
+        ["cat cv.txt", "skrócone CV"],
+        ["cat kontakt.txt", "jak się ze mną skontaktować"],
+        ["ls", "co jest w katalogu domowym"],
+        ["projekty", "otwórz opis projektów"],
+        ["status", "stan mojego serwera"],
+        ["lang", "przełącz na English"],
+        ["clear", "wyczyść ekran"]
+      ],
+      ls: "cv.txt   kontakt.txt   projekty/",
+      cv: [
+        "<span class='c-key'>Kacper Pietrusiewicz</span> — administrator systemów Linux",
+        "",
+        "<span class='c-key'>Doświadczenie</span>",
+        "  08.2025–02.2026  UNIXsupport.PL — Zabbix, RHEL, Ansible",
+        "  09.2026–dziś     własny serwer w Oracle Cloud",
+        "  06–07.2026       Erasmus+, RTU Liepāja — gry przeglądarkowe",
+        "",
+        "<span class='c-key'>Wykształcenie</span>",
+        "  Administracja Systemów i Sieci Komputerowych, ANS Elbląg, 2026",
+        "",
+        "<span class='c-key'>Kursy</span>",
+        "  RH199 (RHCSA), RH294 (Ansible), OCI Architect — w trakcie",
+        "",
+        "<span class='c-dim'>Pełne CV w PDF wyślę mailem — patrz cat kontakt.txt</span>"
+      ],
+      kontakt: [
+        "e-mail:   <a href='mailto:kacper.pietrusiewicz@o2.pl'>kacper.pietrusiewicz@o2.pl</a>",
+        "discord:  <a href='https://discord.com/users/500957140643610634' target='_blank' rel='noopener'>robloksowski</a>",
+        "linkedin: <a href='https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/' target='_blank' rel='noopener'>/in/kacper-pietrusiewicz</a>",
+        "github:   <a href='https://github.com/pietrusiewicz' target='_blank' rel='noopener'>pietrusiewicz</a>"
+      ],
+      projekty: "Opis projektów: <a href='projekty.html'>projekty.html</a>",
+      status: "Sprawdzam serwer…",
+      statusOk: function (d) {
+        return "serwer: <span class='c-val'>online</span>\n" +
+               "uptime: <span class='c-val'>" + d.uptime + "</span>\n" +
+               "system: <span class='c-val'>" + d.os + "</span>\n" +
+               "kopia:  <span class='c-val'>" + d.backup + "</span>";
+      },
+      statusOff: "Nie udało się pobrać statusu. Endpoint <span class='c-val'>/status.json</span> jeszcze nie odpowiada.",
+      sudo: "kacper nie ma uprawnień do tej operacji. I dobrze.",
+      ping: "64 bajty od kacpra: czas &lt;1 ms, wszystko działa.",
+      nieznane: function (c) { return "Nie znam polecenia <b>" + c + "</b>. Wpisz <b>help</b>."; },
+      whoami: "kacper — administrator systemów Linux"
+    },
+    en: {
+      napisz: "write",
+      hello: "Type <b>help</b> to see available commands.",
+      help: [
+        ["neofetch", "who I am at a glance"],
+        ["cat /etc/os-release", "data as a system file"],
+        ["cat cv.txt", "short CV"],
+        ["cat kontakt.txt", "how to reach me"],
+        ["ls", "what's in the home directory"],
+        ["projekty", "open the projects page"],
+        ["status", "my server's state"],
+        ["lang", "switch to Polish"],
+        ["clear", "clear the screen"]
+      ],
+      ls: "cv.txt   kontakt.txt   projekty/",
+      cv: [
+        "<span class='c-key'>Kacper Pietrusiewicz</span> — Linux systems administrator",
+        "",
+        "<span class='c-key'>Experience</span>",
+        "  08.2025–02.2026  UNIXsupport.PL — Zabbix, RHEL, Ansible",
+        "  09.2026–now     own server on Oracle Cloud",
+        "  06–07.2026       Erasmus+, RTU Liepāja — browser games",
+        "",
+        "<span class='c-key'>Education</span>",
+        "  Systems and Computer Networks Administration, ANS Elbląg, 2026",
+        "",
+        "<span class='c-key'>Courses</span>",
+        "  RH199 (RHCSA), RH294 (Ansible), OCI Architect — in progress",
+        "",
+        "<span class='c-dim'>Full PDF CV on request — see cat kontakt.txt</span>"
+      ],
+      kontakt: [
+        "e-mail:   <a href='mailto:kacper.pietrusiewicz@o2.pl'>kacper.pietrusiewicz@o2.pl</a>",
+        "discord:  <a href='https://discord.com/users/500957140643610634' target='_blank' rel='noopener'>robloksowski</a>",
+        "linkedin: <a href='https://www.linkedin.com/in/kacper-pietrusiewicz-17314924b/' target='_blank' rel='noopener'>/in/kacper-pietrusiewicz</a>",
+        "github:   <a href='https://github.com/pietrusiewicz' target='_blank' rel='noopener'>pietrusiewicz</a>"
+      ],
+      projekty: "Projects page: <a href='projekty.html'>projekty.html</a>",
+      status: "Checking the server…",
+      statusOk: function (d) {
+        return "server: <span class='c-val'>online</span>\n" +
+               "uptime: <span class='c-val'>" + d.uptime + "</span>\n" +
+               "os:     <span class='c-val'>" + d.os + "</span>\n" +
+               "backup: <span class='c-val'>" + d.backup + "</span>";
+      },
+      statusOff: "Could not fetch status. The <span class='c-val'>/status.json</span> endpoint is not answering yet.",
+      sudo: "kacper is not in the sudoers file. This incident will be reported.",
+      ping: "64 bytes from kacper: time &lt;1 ms, all good.",
+      nieznane: function (c) { return "Unknown command <b>" + c + "</b>. Type <b>help</b>."; },
+      whoami: "kacper — Linux systems administrator"
+    }
+  };
+
+  function esc(t) {
+    return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function line(html) {
+    var d = document.createElement("div");
+    d.className = "line";
+    d.innerHTML = html;
+    out.appendChild(d);
+    out.scrollTop = out.scrollHeight;
+    return d;
+  }
+
+  function echo(cmd) {
+    line('<span class="p-user">kacper@linux</span><span class="p-path">:~$</span> <span class="p-cmd">' + esc(cmd) + "</span>");
+  }
+
+  function t() { return T[lang]; }
+
+  function renderNeofetch() {
+    var rows = [
+      ["OS", lang === "pl" ? "Oracle Linux 10 (RHEL)" : "Oracle Linux 10 (RHEL)"],
+      ["Host", "Oracle Cloud, A1.Flex, 2 OCPU, 12 GB"],
+      ["Shell", "bash"],
+      ["Role", lang === "pl" ? "administrator systemów Linux" : "Linux systems administrator"],
+      ["Stack", "Zabbix, Ansible, nginx, systemd, SELinux"],
+      ["Certs", "RH199, RH294, OCI (w trakcie)"],
+      ["Locale", "pl_PL, Węgorzewo, Polska"],
+      ["Contact", "kacper.pietrusiewicz@o2.pl"],
+      ["Site", "pietrusiewicz.github.io"]
+    ];
+    var html = '<div class="nf" style="display:grid;grid-template-columns:104px minmax(0,1fr);gap:28px;align-items:start">' +
+      '<div style="color:rgba(110,231,160,.85)">' +
+        '<svg viewBox="0 0 120 140" fill="none" style="width:100%;height:auto">' +
+          '<g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+            '<path d="M60 12c-24 0-38 18-38 42v34c0 12 8 20 20 20h36c12 0 20-8 20-20V54c0-24-14-42-38-42Z"/>' +
+            '<path d="M60 46c-13 0-22 11-22 25v17c0 7 4 11 11 11h22c7 0 11-4 11-11V71c0-14-9-25-22-25Z"/>' +
+            '<circle cx="50" cy="32" r="3.4" fill="currentColor" stroke="none"/>' +
+            '<circle cx="70" cy="32" r="3.4" fill="currentColor" stroke="none"/>' +
+            '<path d="M55 41h10l-5 8z" fill="currentColor" stroke="none"/>' +
+            '<path d="M22 60c-6 12-6 26-1 38M98 60c6 12 6 26 1 38"/>' +
+            '<path d="M48 108v10h-11M72 108v10h11"/>' +
+          '</g>' +
+        '</svg>' +
+      '</div><div>' +
+      '<div><span class="c-key">kacper</span><span class="c-dim">@</span><span class="c-key">linux</span></div>' +
+      '<div class="c-dim">-----------</div>';
+    rows.forEach(function (r) {
+      html += '<div style="display:grid;grid-template-columns:74px 1fr;gap:10px">' +
+              '<span class="c-key">' + r[0] + '</span><span class="c-val">' + r[1] + '</span></div>';
+    });
+    html += "</div></div>";
+    line(html);
+  }
+
+  function renderOsRelease() {
+    var rows = [
+      ["NAME", "Kacper Pietrusiewicz"],
+      ["ROLE", lang === "pl" ? "administrator systemów Linux" : "Linux systems administrator"],
+      ["SPEC", lang === "pl" ? "wsparcie IT, monitoring, automatyzacja" : "IT support, monitoring, automation"],
+      ["STACK", "RHEL, Oracle Linux, Zabbix, Ansible"],
+      ["CERTS", "RH199, RH294, OCI (w trakcie)"],
+      ["LOCATION", "Węgorzewo, Polska"],
+      ["CONTACT", "kacper.pietrusiewicz@o2.pl"],
+      ["WEBSITE", "pietrusiewicz.github.io"]
+    ];
+    var html = '<dl style="display:grid;gap:4px;margin:0">';
+    rows.forEach(function (r) {
+      html += '<div style="display:grid;grid-template-columns:116px 1fr">' +
+              '<span class="c-key">' + r[0] + '</span>' +
+              '<span><span class="c-dim">=</span><span class="c-val">"' + r[1] + '"</span></span></div>';
+    });
+    html += "</dl>";
+    line(html);
+  }
+
+  function chips() {
+    var d = document.createElement("div");
+    d.className = "chips";
+    (lang === "pl"
+      ? ["neofetch", "cat cv.txt", "ls", "projekty", "status", "help"]
+      : ["neofetch", "cat cv.txt", "ls", "projekty", "status", "help"]
+    ).forEach(function (c) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "chip";
+      b.textContent = c;
+      b.addEventListener("click", function () { run(c); });
+      d.appendChild(b);
+    });
+    out.appendChild(d);
+    out.scrollTop = out.scrollHeight;
+  }
+
+  function run(raw) {
+    var cmd = String(raw).trim();
+    if (!cmd) return;
+
+    if (cmd === "clear") {
+      out.innerHTML = "";
+      return;
+    }
+
+    echo(cmd);
+
+    var c = cmd.toLowerCase();
+
+    if (c === "help") {
+      var rows = t().help.map(function (r) {
+        return '<div style="display:grid;grid-template-columns:190px 1fr;gap:8px">' +
+               '<span class="c-key">' + r[0] + '</span><span class="c-dim">' + r[1] + "</span></div>";
+      }).join("");
+      line(rows);
+      chips();
+    } else if (c === "neofetch") {
+      renderNeofetch();
+    } else if (c === "cat /etc/os-release" || c === "cat /etc/os-release ") {
+      renderOsRelease();
+    } else if (c === "ls" || c === "ls -la") {
+      line(t().ls);
+    } else if (c === "cat cv.txt" || c === "cat cv") {
+      line(t().cv.map(function (l) {
+        return l.replace(/^ +/g, function (m) { return new Array(m.length + 1).join("&nbsp;"); });
+      }).join("\n"));
+    } else if (c === "cat kontakt.txt" || c === "kontakt") {
+      line(t().kontakt.join("\n"));
+    } else if (c === "projekty" || c === "cat projekty.txt" || c === "projects") {
+      line(t().projekty);
+    } else if (c === "status") {
+      line(t().status);
+      var t0 = performance.now();
+      var img = new Image();
+      var gotowe = false;
+      img.onload = img.onerror = function () {
+        if (gotowe) return;
+        gotowe = true;
+        var ms = Math.round(performance.now() - t0);
+        // obrazek ładuje się także przy błędzie HTTP, więc mierzymy sam czas odpowiedzi
+        line(lang === "pl"
+          ? "serwer: <span class='c-val'>odpowiada</span>  (" + ms + " ms, beginner3d.duckdns.org)\n" +
+            "system: <span class='c-val'>Oracle Linux 10</span>\n" +
+            "usługi: <span class='c-val'>nginx, Django, Luanti, bot Discord</span>\n" +
+            "kopie:  <span class='c-val'>nocne, 14 dni, sumy SHA-256</span>"
+          : "server: <span class='c-val'>responding</span>  (" + ms + " ms, beginner3d.duckdns.org)\n" +
+            "os:     <span class='c-val'>Oracle Linux 10</span>\n" +
+            "services: <span class='c-val'>nginx, Django, Luanti, Discord bot</span>\n" +
+            "backups:  <span class='c-val'>nightly, 14 days, SHA-256</span>");
+      };
+      img.src = "https://beginner3d.duckdns.org/favicon.ico?_=" + Date.now();
+      setTimeout(function () {
+        if (gotowe) return;
+        gotowe = true;
+        line(t().statusOff);
+      }, 5000);
+    } else if (c === "whoami") {
+      line(t().whoami);
+    } else if (c.indexOf("sudo") === 0) {
+      line(t().sudo);
+    } else if (c.indexOf("ping") === 0) {
+      line(t().ping);
+    } else if (c === "lang" || c === "english" || c === "en") {
+      setLang(lang === "pl" ? "en" : "pl");
+    } else {
+      line(t().nieznane(esc(cmd)));
+      chips();
+    }
+  }
+
+  function setLang(l) {
+    lang = l;
+    langBtn.textContent = l === "pl" ? "EN" : "PL";
+    fcLabel.textContent = t().napisz;
+    document.documentElement.lang = l;
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var v = input.value;
+    if (!v.trim()) return;
+    hist.push(v);
+    histIdx = hist.length;
+    input.value = "";
+    run(v);
   });
+
+  form.addEventListener("keydown", function (e) {
+    if (e.key === "ArrowUp") {
+      if (histIdx > 0) { histIdx--; input.value = hist[histIdx]; }
+      e.preventDefault();
+    } else if (e.key === "ArrowDown") {
+      if (histIdx < hist.length - 1) { histIdx++; input.value = hist[histIdx]; }
+      else { histIdx = hist.length; input.value = ""; }
+      e.preventDefault();
+    }
+  });
+
+  shell.addEventListener("click", function (e) {
+    if (e.target.closest("a, button, input")) return;
+    input.focus();
+  });
+
+  langBtn.addEventListener("click", function () {
+    setLang(lang === "pl" ? "en" : "pl");
+    run(lang === "pl" ? "help" : "help");
+  });
+
+  setLang("pl");
+  run("neofetch");
+  line('<span class="c-dim">' + (lang === "pl" ? "wpisz <b>help</b>, aby zobaczyć pozostałe polecenia" : "type <b>help</b> to see the other commands") + "</span>");
 })();
 
 /* ---------- deszcz znaków w tle ---------- */
