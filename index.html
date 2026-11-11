@@ -152,7 +152,7 @@
     padding: 40px 44px 30px;
     border: 1px solid rgba(255, 255, 255, .13);
     border-radius: 26px;
-    background: transparent;
+    background: rgba(13, 18, 25, .88);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, .08) inset,
       0 40px 100px -50px rgba(0, 0, 0, .9);
@@ -163,19 +163,13 @@
 
   .face.back {
     transform: rotateY(180deg);
-    background: transparent;
+    background: rgba(13, 18, 25, .88);
   }
 
-  /* nieaktywna strona znika w połowie obrotu — inaczej prześwituje przez drugą */
-  .face {
-    transition: opacity .30s linear 0s, visibility 0s linear 0s;
-  }
-
-  .face.is-hidden {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .30s linear, visibility 0s linear .42s;
-  }
+  /* strony nie są wyłączane — o tym, którą widać, decyduje backface-visibility;
+     nieaktywna strona tylko nie łapie kliknięć */
+  .card3d:not(.is-flipped) .face.back,
+  .card3d.is-flipped .face.front { pointer-events: none; }
 
   /* ---------- pasek terminala ---------- */
   .prompt {
@@ -590,20 +584,17 @@
   var przod = karta.querySelector(".front");
   var tyl = karta.querySelector(".back");
 
-  function ustawWidocznosc() {
-    if (!przod || !tyl) return;
+  function ustawStan() {
     var obrocona = karta.classList.contains("is-flipped");
-    // nieaktywna strona jest niewidoczna, ale zostaje w układzie
-    przod.classList.toggle("is-hidden", obrocona);
-    tyl.classList.toggle("is-hidden", !obrocona);
-    przod.inert = obrocona;
-    tyl.inert = !obrocona;
+    karta.setAttribute("aria-pressed", obrocona ? "true" : "false");
+    // obie strony zostają narysowane; blokujemy tylko fokus na niewidocznej
+    if (przod) przod.inert = obrocona;
+    if (tyl) tyl.inert = !obrocona;
   }
 
   function przelacz() {
     karta.classList.toggle("is-flipped");
-    karta.setAttribute("aria-pressed", karta.classList.contains("is-flipped") ? "true" : "false");
-    ustawWidocznosc();
+    ustawStan();
   }
 
   karta.addEventListener("click", function (e) {
@@ -619,7 +610,7 @@
     }
   });
 
-  ustawWidocznosc();
+  ustawStan();
 })();
 </script>
 </body>
