@@ -529,7 +529,10 @@
   }
   .cmd-input:focus { outline: none; }
 
+  /* kursor-blok pokazujemy tylko, gdy pole nie ma fokusu —
+     po kliknięciu miga prawdziwy kursor w miejscu wpisywania */
   .cmd-form .cursor { margin-left: -4px; }
+  .cmd-form:focus-within .cursor { display: none; }
 
   .front-contact {
     display: flex;
