@@ -437,54 +437,51 @@
     .avatar { width: 68px; height: 68px; border-radius: 18px; font-size: 23px; }
   }
 
-  /* ---------- mobile: bez obrotu, strony pod sobą ---------- */
+  /* ---------- mobile: ta sama karta, w pionie ---------- */
   @media (max-width: 760px) {
-    body { padding: 20px 14px; font-size: 16px; }
-    .card3d {
-      aspect-ratio: auto;
-      transform: none !important;
-      transition: none;
-      cursor: default;
-      display: grid;
-      gap: 16px;
-    }
+    body { padding: 16px 12px; font-size: 15px; }
+
+    .scene::before { inset: 5px 5px -6px 5px; border-radius: 20px; }
+    .scene::after { inset: 10px 10px -12px 10px; border-radius: 20px; }
+
+    .card3d { aspect-ratio: 3 / 4; }
+
     .face {
-      position: relative;
-      inset: auto;
-      transform: none !important;
-      overflow: visible;
-      padding: 24px 20px 22px;
+      padding: 18px 16px 14px;
       border-radius: 20px;
-      min-height: 0;
+      overflow: auto;
+      scrollbar-width: none;
     }
-    .face.back { transform: none !important; }
-    .face.is-hidden { opacity: 1 !important; visibility: visible !important; }
-    .avatar { width: 58px; height: 58px; border-radius: 16px; font-size: 20px; }
-    .head { margin-top: 20px; gap: 16px; }
-    .tagline { margin: 18px 0 0; font-size: 18px; }
-    .techs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
-    .tech {
-      aspect-ratio: auto;
-      grid-template-rows: 24px auto;
-      gap: 7px;
-      padding: 11px 5px 9px;
-    }
-    .tech .ico { width: 22px; height: 22px; }
-    .tech .name {
-      position: static;
-      opacity: 1;
-      transform: none;
-      padding: 0;
-      font-size: 10.5px;
-      line-height: 1.15;
-      text-align: center;
-      white-space: normal;
-      background: none;
-      box-shadow: none;
-      color: #c6ccd4;
-      font-family: Inter, system-ui, sans-serif;
-    }
-    .tech .name::after { display: none; }
+    .face::-webkit-scrollbar { display: none; }
+
+    .prompt { font-size: 11px; padding-bottom: 12px; gap: 8px; }
+    .dots { gap: 5px; margin-right: 3px; }
+    .dots i { width: 8px; height: 8px; }
+    .cursor { width: 6px; height: 12px; }
+
+    .head { margin-top: auto; gap: 13px; }
+    .avatar { width: 52px; height: 52px; border-radius: 14px; font-size: 18px; }
+    h1 { font-size: 25px; letter-spacing: -.03em; }
+    .role { font-size: 11.5px; margin-top: 5px; }
+    .tagline { font-size: 15.5px; line-height: 1.4; margin: 14px 0 auto; }
+
+    .back-top { padding-bottom: 10px; }
+    .back-name { font-size: 13.5px; }
+    .label { font-size: 9px; letter-spacing: .12em; margin-bottom: 6px; }
+
+    .links { gap: 6px; margin-top: 10px !important; }
+    .pill { padding: 7px 10px; font-size: 11px; gap: 6px; }
+    .pill svg { width: 13px; height: 13px; }
+
+    .tech-wrap { margin-top: 12px; }
+    .techs { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3px; }
+    .tech .ico { width: 21px; height: 21px; }
+
+    .certs { padding-top: 10px; gap: 5px; }
+    .cert { font-size: 9px; padding: 3px 6px; }
+
+    .foot { font-size: 9px; margin-top: 9px; padding-top: 8px; }
+    .foot span:nth-child(2) { display: none; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -588,26 +585,15 @@
 <script>
 (function () {
   var karta = document.getElementById("karta");
-  var btn = document.getElementById("obroc");
   if (!karta) return;
 
   var przod = karta.querySelector(".front");
   var tyl = karta.querySelector(".back");
-  var mobile = window.matchMedia("(max-width: 760px)");
 
   function ustawWidocznosc() {
     if (!przod || !tyl) return;
-
-    // na wąskim ekranie obie strony są widoczne jedna pod drugą — nic nie ukrywamy
-    if (mobile.matches) {
-      przod.classList.remove("is-hidden");
-      tyl.classList.remove("is-hidden");
-      przod.inert = false;
-      tyl.inert = false;
-      return;
-    }
-
     var obrocona = karta.classList.contains("is-flipped");
+    // nieaktywna strona jest niewidoczna, ale zostaje w układzie
     przod.classList.toggle("is-hidden", obrocona);
     tyl.classList.toggle("is-hidden", !obrocona);
     przod.inert = obrocona;
@@ -615,7 +601,6 @@
   }
 
   function przelacz() {
-    if (mobile.matches) return;              // na dotyku nie ma obrotu
     karta.classList.toggle("is-flipped");
     karta.setAttribute("aria-pressed", karta.classList.contains("is-flipped") ? "true" : "false");
     ustawWidocznosc();
@@ -633,17 +618,6 @@
       przelacz();
     }
   });
-
-  if (btn) {
-    btn.addEventListener("click", function (e) {
-      e.stopPropagation();
-      przelacz();
-    });
-  }
-
-  if (mobile.addEventListener) {
-    mobile.addEventListener("change", ustawWidocznosc);
-  }
 
   ustawWidocznosc();
 })();
