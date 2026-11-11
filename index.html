@@ -872,24 +872,24 @@
         <button class="cmd-line" id="cmd" type="button"
                 aria-label="Zmień widok: cat /etc/os-release lub neofetch">
           <span class="cmd-user">kacper@linux</span><span class="cmd-path">:~$</span>
-          <span class="cmd-text" id="cmd-text">cat /etc/os-release</span>
-          <span class="cmd-hint" aria-hidden="true">neofetch →</span>
+          <span class="cmd-text" id="cmd-text">neofetch</span>
+          <span class="cmd-hint" aria-hidden="true">os-release →</span>
         </button>
 
-        <div class="view" id="view-osrel">
+        <div class="view" id="view-osrel" hidden>
           <dl class="osrel">
             <div class="row"><dt>NAME</dt><dd><span class="eq">=</span><span class="vr">"Kacper Pietrusiewicz"</span></dd></div>
             <div class="row"><dt>ROLE</dt><dd><span class="eq">=</span><span class="vr">"administrator systemów Linux"</span></dd></div>
-            <div class="row"><dt>SPEC</dt><dd><span class="eq">=</span><span class="vr">"wsparcie IT · monitoring · automatyzacja"</span></dd></div>
-            <div class="row"><dt>STACK</dt><dd><span class="eq">=</span><span class="vr">"RHEL · Oracle Linux · Zabbix · Ansible"</span></dd></div>
-            <div class="row"><dt>CERTS</dt><dd><span class="eq">=</span><span class="vr">"RH199 · RH294 · OCI (w trakcie)"</span></dd></div>
+            <div class="row"><dt>SPEC</dt><dd><span class="eq">=</span><span class="vr">"wsparcie IT, monitoring, automatyzacja"</span></dd></div>
+            <div class="row"><dt>STACK</dt><dd><span class="eq">=</span><span class="vr">"RHEL, Oracle Linux, Zabbix, Ansible"</span></dd></div>
+            <div class="row"><dt>CERTS</dt><dd><span class="eq">=</span><span class="vr">"RH199, RH294, OCI (w trakcie)"</span></dd></div>
             <div class="row"><dt>LOCATION</dt><dd><span class="eq">=</span><span class="vr">"Węgorzewo, Polska"</span></dd></div>
             <div class="row"><dt>CONTACT</dt><dd><span class="eq">=</span><span class="vr">"kacper.pietrusiewicz@o2.pl"</span></dd></div>
             <div class="row"><dt>WEBSITE</dt><dd><span class="eq">=</span><span class="vr">"pietrusiewicz.github.io"</span></dd></div>
           </dl>
         </div>
 
-        <div class="view" id="view-neofetch" hidden>
+        <div class="view" id="view-neofetch">
           <div class="nf">
             <div class="nf-logo" aria-hidden="true">
               <svg viewBox="0 0 120 140" fill="none">
@@ -908,12 +908,12 @@
               <div class="nf-title"><span class="nf-user">kacper</span><span class="nf-at">@</span><span class="nf-host">linux</span></div>
               <div class="nf-sep">-----------</div>
               <div class="nf-row"><span class="nf-k">OS</span><span class="nf-v">Oracle Linux 10 (RHEL)</span></div>
-              <div class="nf-row"><span class="nf-k">Host</span><span class="nf-v">Oracle Cloud · A1.Flex, 2 OCPU, 12 GB</span></div>
+              <div class="nf-row"><span class="nf-k">Host</span><span class="nf-v">Oracle Cloud, A1.Flex, 2 OCPU, 12 GB</span></div>
               <div class="nf-row"><span class="nf-k">Shell</span><span class="nf-v">bash</span></div>
               <div class="nf-row"><span class="nf-k">Role</span><span class="nf-v">administrator systemów Linux</span></div>
-              <div class="nf-row"><span class="nf-k">Stack</span><span class="nf-v">Zabbix · Ansible · nginx · systemd · SELinux</span></div>
-              <div class="nf-row"><span class="nf-k">Certs</span><span class="nf-v">RH199 · RH294 · OCI (w trakcie)</span></div>
-              <div class="nf-row"><span class="nf-k">Locale</span><span class="nf-v">pl_PL · Węgorzewo, Polska</span></div>
+              <div class="nf-row"><span class="nf-k">Stack</span><span class="nf-v">Zabbix, Ansible, nginx, systemd, SELinux</span></div>
+              <div class="nf-row"><span class="nf-k">Certs</span><span class="nf-v">RH199, RH294, OCI (w trakcie)</span></div>
+              <div class="nf-row"><span class="nf-k">Locale</span><span class="nf-v">pl_PL, Węgorzewo, Polska</span></div>
               <div class="nf-row"><span class="nf-k">Contact</span><span class="nf-v">kacper.pietrusiewicz@o2.pl</span></div>
               <div class="nf-row"><span class="nf-k">Site</span><span class="nf-v">pietrusiewicz.github.io</span></div>
             </div>
@@ -934,7 +934,7 @@
       <div class="back-layout">
         <div class="back-person">
           <h2>Kacper Pietrusiewicz</h2>
-          <p class="back-tagline">administrator systemów linux<br>wsparcie IT &middot; monitoring &middot; automatyzacja</p>
+          <p class="back-tagline">administrator systemów linux<br>wsparcie IT, monitoring, automatyzacja</p>
 
           <div class="back-contact">
             <a href="mailto:kacper.pietrusiewicz@o2.pl">
@@ -1035,7 +1035,7 @@
   var b = document.getElementById("view-neofetch");
   if (!cmd || !a || !b) return;
 
-  var pokazNeofetch = false;
+  var pokazNeofetch = true;
 
   cmd.addEventListener("click", function () {
     pokazNeofetch = !pokazNeofetch;
