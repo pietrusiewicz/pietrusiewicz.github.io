@@ -531,7 +531,7 @@
 
   /* kursor-blok pokazujemy tylko, gdy pole nie ma fokusu —
      po kliknięciu miga prawdziwy kursor w miejscu wpisywania */
-  .cmd-form .cursor { margin-left: -4px; }
+  .cmd-form .cursor { flex: 0 0 auto; }
   .cmd-form:focus-within .cursor { display: none; }
 
   .front-contact {
@@ -971,9 +971,9 @@
 
         <form class="cmd-form" id="cmd-form" autocomplete="off">
           <label class="ps1" for="cmd-input">kacper@linux:~$</label>
+          <span class="cursor" aria-hidden="true"></span>
           <input id="cmd-input" class="cmd-input" type="text" spellcheck="false"
                  autocapitalize="off" autocorrect="off" aria-label="Wpisz polecenie — wpisz help">
-          <span class="cursor" aria-hidden="true"></span>
         </form>
       </div>
 
