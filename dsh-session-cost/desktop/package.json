@@ -1,0 +1,15 @@
+{
+  "name": "dsh-session-cost-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Clickable desktop installer for the dsh-session-cost DSH plugin",
+  "type": "commonjs",
+  "scripts": {
+    "sync": "node sync-plugin.mjs",
+    "build": "npm run sync && neu update && neu build --embed-resources --clean",
+    "test": "node test-core.mjs"
+  },
+  "devDependencies": {
+    "@neutralinojs/neu": "11.6.0"
+  }
+}
