@@ -67,6 +67,13 @@
   .zbx-table a { color:#8fc7ff; text-decoration:none; }
   .zbx-table a:hover { text-decoration:underline; }
   .ok { color:#7ed492; } .warn { color:#e5b567; } .bad { color:#e57373; }
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(12px);
+    padding: 10px 18px; border-radius: 999px; font-size: 13px;
+    color: #07130d; background: #6ee7a0; box-shadow: 0 16px 40px -18px rgba(0,0,0,.9);
+    opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
   @media (max-width: 720px) { .zbx-body { grid-template-columns:1fr; } .zbx-side { display:none; } }
 </style>
 </head>
@@ -163,6 +170,32 @@
     <a href="https://github.com/pietrusiewicz/zabbix-vim" target="_blank" rel="noopener">github.com/pietrusiewicz/zabbix-vim</a>
   </p>
 </div>
+
+<div class="toast" id="toast">To atrapa Zabbixa — prawdziwe linki prowadziłyby do panelu</div>
+
+<script>
+(function () {
+  var toast = document.getElementById("toast");
+  var timer = null;
+
+  function pokaz() {
+    if (!toast) return;
+    toast.classList.add("show");
+    clearTimeout(timer);
+    timer = setTimeout(function () { toast.classList.remove("show"); }, 1800);
+  }
+
+  // Każdy link atrapy zostaje w miejscu — bez 404.
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a");
+    if (!a) return;
+    var href = a.getAttribute("href") || "";
+    if (href.indexOf("zabbix.php") === -1) return;
+    e.preventDefault();
+    pokaz();
+  }, true);
+})();
+</script>
 
 <script src="content.js"></script>
 </body>
