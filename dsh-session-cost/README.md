@@ -4,6 +4,8 @@ A small client plugin for [DeepSeek Harness](https://github.com/deepseek-ai/deep
 
 ![Screenshot](screenshot.png)
 
+*Screenshot uses demo workspaces and sessions.*
+
 ## What it does
 
 - Reads the cumulative `tokenUsage` session projection: uncached input, cache read, cache write, and output tokens.
