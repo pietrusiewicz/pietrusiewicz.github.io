@@ -1120,12 +1120,13 @@
         ["ls", "co jest w katalogu domowym"],
         ["projekty", "otwórz opis projektów"],
         ["wiedza", "encyklopedia pojęć, których używam"],
+        ["zabbix-vim", "demo mojego rozszerzenia do Zabbixa"],
         ["man <hasło>", "np. man selinux, man nginx"],
         ["status", "stan mojego serwera"],
         ["lang", "przełącz na English"],
         ["clear", "wyczyść ekran"]
       ],
-      ls: "cv.txt   kontakt.txt   projekty/   wiedza/",
+      ls: "cv.txt   kontakt.txt   projekty/   wiedza/   demo/",
       cv: [
         "<span class='c-key'>Kacper Pietrusiewicz</span> — administrator systemów Linux",
         "",
@@ -1173,6 +1174,7 @@
         ["ls", "what's in the home directory"],
         ["projekty", "open the projects page"],
         ["wiedza", "encyclopedia of terms I use"],
+        ["zabbix-vim", "demo of my Zabbix extension"],
         ["man <term>", "e.g. man selinux, man nginx"],
         ["status", "my server's state"],
         ["lang", "switch to Polish"],
@@ -1297,7 +1299,7 @@
     var d = document.createElement("div");
     d.className = "chips";
     (lang === "pl"
-      ? ["neofetch", "cat cv.txt", "ls", "projekty", "wiedza", "status", "help"]
+      ? ["neofetch", "cat cv.txt", "ls", "projekty", "wiedza", "zabbix-vim", "status", "help"]
       : ["neofetch", "cat cv.txt", "ls", "projekty", "status", "help"]
     ).forEach(function (c) {
       var b = document.createElement("button");
@@ -1380,6 +1382,10 @@
       line(lang === "pl"
         ? "Otwieram hasło <span class='c-val'>" + haslo + "</span>: <a href='wiedza/#" + haslo + "'>wiedza/#" + haslo + "</a>"
         : "Opening entry <span class='c-val'>" + haslo + "</span>: <a href='wiedza/#" + haslo + "'>wiedza/#" + haslo + "</a>");
+    } else if (c === "zabbix-vim" || c === "demo") {
+      line(lang === "pl"
+        ? "Rozszerzenie do Zabbixa: <a href='demo/zabbix/'>demo w przeglądarce</a> · <a href='https://github.com/pietrusiewicz/zabbix-vim' target='_blank' rel='noopener'>kod na GitHubie</a>"
+        : "Zabbix extension: <a href='demo/zabbix/'>live demo</a> · <a href='https://github.com/pietrusiewicz/zabbix-vim' target='_blank' rel='noopener'>source on GitHub</a>");
     } else if (c === "whoami") {
       line(t().whoami);
     } else if (c.indexOf("sudo") === 0) {
