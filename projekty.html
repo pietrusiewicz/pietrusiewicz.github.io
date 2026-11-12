@@ -80,6 +80,21 @@
     <div class="tags"><span class="tag">Ansible</span><span class="tag">Zabbix</span><span class="tag">bash</span></div>
   </article>
 
+
+  <article>
+    <h2>zabbix-vim — rozszerzenie przeglądarki do Zabbixa</h2>
+    <p class="meta">2026 · Manifest V3, JavaScript, testy</p>
+    <p>Nawigacja po interfejsie Zabbixa klawiszami vima: tryb normalny, etykiety na linkach (hint mode), paleta poleceń i HUD z aktualnym trybem. Rozszerzenie działa w Chromium i Firefoksie, nie łączy się z siecią i nie przechowuje danych logowania.</p>
+    <ul>
+      <li>Hint mode — etykiety na wszystkich widocznych linkach i przyciskach, zawężanie kandydatów przez wpisywanie, <code>F</code> otwiera w nowej karcie.</li>
+      <li>Paleta poleceń budowana z nawigacji samej strony (<code>zabbix.php?action=…</code>) — bez zahardkodowanych adresów.</li>
+      <li>Wykrywanie strony po obecności co najmniej dwóch linków Zabbixa, więc skrypt milczy na innych witrynach.</li>
+      <li>Testy jednostkowe i e2e (Playwright), zrzuty z prawdziwej instancji Zabbix 7.0.</li>
+    </ul>
+    <p><a href="demo/zabbix/">Zobacz demo w przeglądarce</a> — prawdziwe rozszerzenie na atrapie interfejsu, bez instalacji. Kod: <a href="https://github.com/pietrusiewicz/zabbix-vim" target="_blank" rel="noopener">github.com/pietrusiewicz/zabbix-vim</a>.</p>
+    <div class="tags"><span class="tag">JavaScript</span><span class="tag">Manifest V3</span><span class="tag">Zabbix</span><span class="tag">Playwright</span></div>
+  </article>
+
   <footer>
     Kacper Pietrusiewicz · <a href="./">wizytówka</a> · <a href="wiedza/">wiedza</a> · <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
   </footer>
