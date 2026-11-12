@@ -1,0 +1,4 @@
+# Add to the profile's cordis.patch.yml, replacing the absolute path.
+- insert:
+    - id: session-cost
+      name: file:///ABSOLUTE/PATH/TO/dsh-session-cost/lib/index.js

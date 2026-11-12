@@ -1,0 +1,23 @@
+{
+  "name": "dsh-session-cost",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shows an estimated token cost in each opened sidebar session row, before its relative time.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "immediately": true
+    }
+  }
+}
