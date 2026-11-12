@@ -1119,11 +1119,13 @@
         ["cat kontakt.txt", "jak się ze mną skontaktować"],
         ["ls", "co jest w katalogu domowym"],
         ["projekty", "otwórz opis projektów"],
+        ["wiedza", "encyklopedia pojęć, których używam"],
+        ["man <hasło>", "np. man selinux, man nginx"],
         ["status", "stan mojego serwera"],
         ["lang", "przełącz na English"],
         ["clear", "wyczyść ekran"]
       ],
-      ls: "cv.txt   kontakt.txt   projekty/",
+      ls: "cv.txt   kontakt.txt   projekty/   wiedza/",
       cv: [
         "<span class='c-key'>Kacper Pietrusiewicz</span> — administrator systemów Linux",
         "",
@@ -1170,11 +1172,13 @@
         ["cat kontakt.txt", "how to reach me"],
         ["ls", "what's in the home directory"],
         ["projekty", "open the projects page"],
+        ["wiedza", "encyclopedia of terms I use"],
+        ["man <term>", "e.g. man selinux, man nginx"],
         ["status", "my server's state"],
         ["lang", "switch to Polish"],
         ["clear", "clear the screen"]
       ],
-      ls: "cv.txt   kontakt.txt   projekty/",
+      ls: "cv.txt   kontakt.txt   projekty/   wiedza/",
       cv: [
         "<span class='c-key'>Kacper Pietrusiewicz</span> — Linux systems administrator",
         "",
@@ -1293,7 +1297,7 @@
     var d = document.createElement("div");
     d.className = "chips";
     (lang === "pl"
-      ? ["neofetch", "cat cv.txt", "ls", "projekty", "status", "help"]
+      ? ["neofetch", "cat cv.txt", "ls", "projekty", "wiedza", "status", "help"]
       : ["neofetch", "cat cv.txt", "ls", "projekty", "status", "help"]
     ).forEach(function (c) {
       var b = document.createElement("button");
@@ -1367,6 +1371,15 @@
         gotowe = true;
         line(t().statusOff);
       }, 5000);
+    } else if (c === "wiedza" || c === "wiki" || c === "man") {
+      line(lang === "pl"
+        ? "Encyklopedia: <a href='wiedza/'>wiedza/</a> — albo <span class='c-val'>man selinux</span>"
+        : "Encyclopedia: <a href='wiedza/'>wiedza/</a> — or <span class='c-val'>man selinux</span>");
+    } else if (c.indexOf("man ") === 0) {
+      var haslo = c.slice(4).trim().replace(/[^a-z0-9_-]/g, "");
+      line(lang === "pl"
+        ? "Otwieram hasło <span class='c-val'>" + haslo + "</span>: <a href='wiedza/#" + haslo + "'>wiedza/#" + haslo + "</a>"
+        : "Opening entry <span class='c-val'>" + haslo + "</span>: <a href='wiedza/#" + haslo + "'>wiedza/#" + haslo + "</a>");
     } else if (c === "whoami") {
       line(t().whoami);
     } else if (c.indexOf("sudo") === 0) {
