@@ -39,7 +39,31 @@ localStorage.setItem('dsh-session-cost:rates', JSON.stringify({
 
 The plugin is a package directory, not an npm bundle. The installer copies it to `$DSH_HOME/plugins/dsh-session-cost`, adds one loader entry to the profile's `cordis.patch.yml`, and keeps a timestamped backup of that file. It defaults to the `web` profile and is safe to run again.
 
-### Linux / macOS
+### One-line install
+
+No clone and no file left in Downloads: the bootstrap downloads the repository into a temporary directory, installs the plugin, and removes the temporary files.
+
+Linux / macOS:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/pietrusiewicz/pietrusiewicz.github.io/main/dsh-session-cost/install/install-online.sh | bash
+# or another profile:
+curl -fsSL https://raw.githubusercontent.com/pietrusiewicz/pietrusiewicz.github.io/main/dsh-session-cost/install/install-online.sh | bash -s -- tui
+```
+
+Windows PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/pietrusiewicz/pietrusiewicz.github.io/main/dsh-session-cost/install/install-online.ps1 | iex
+# or another profile:
+$env:DSH_PROFILE = "tui"; irm https://raw.githubusercontent.com/pietrusiewicz/pietrusiewicz.github.io/main/dsh-session-cost/install/install-online.ps1 | iex
+```
+
+`wget -qO-` works instead of `curl -fsSL`. Set `DSH_HOME` for a non-default DSH home, or `DSH_SESSION_COST_REF` for another branch or tag. Review the script first if you prefer not to pipe it into a shell.
+
+### From a local clone
+
+Linux / macOS:
 
 ```bash
 git clone https://github.com/pietrusiewicz/pietrusiewicz.github.io.git
@@ -49,9 +73,7 @@ cd pietrusiewicz.github.io/dsh-session-cost
 ./install/install-linux.sh tui
 ```
 
-### Windows
-
-From the same plugin directory, double-click `install\install-windows.cmd`, or run:
+Windows: from the same plugin directory, double-click `install\install-windows.cmd`, or run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\install\install-windows.ps1
