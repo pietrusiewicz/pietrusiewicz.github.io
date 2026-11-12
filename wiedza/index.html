@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiedza — Kacper Pietrusiewicz</title>
+<meta name="description" content="Encyklopedia pojęć, których używam na co dzień: SELinux, systemd, nginx, Zabbix, Ansible, LVM, kopie zapasowe.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.68;
+    background:
+      radial-gradient(70% 50% at 12% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    min-height:100dvh; padding:44px 20px 90px;
+  }
+  .wrap { max-width: 820px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  .back { font-size: 13px; color: var(--muted); border:0; }
+  h1 { font-size: clamp(26px,4vw,38px); font-weight:900; letter-spacing:-.03em; margin:20px 0 6px; }
+  .lead { color: var(--muted); margin:0 0 26px; }
+  .search {
+    width:100%; padding:12px 16px; font:inherit; font-size:15px;
+    color:var(--ink); background:rgba(255,255,255,.03);
+    border:1px solid var(--line); border-radius:12px; outline:none;
+  }
+  .search:focus { border-color: rgba(110,231,160,.55); }
+  .count { font-size: 12.5px; color: var(--muted); margin: 8px 0 26px; }
+  article {
+    border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin-bottom:16px;
+    background:rgba(255,255,255,.02); scroll-margin-top: 20px;
+  }
+  article:target { border-color: rgba(110,231,160,.55); }
+  h2 { font-size:18.5px; margin:0 0 4px; letter-spacing:-.01em; }
+  .meta { font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  article p { margin:0 0 10px; color:#c9d0d8; }
+  .praktyka { border-left:2px solid rgba(110,231,160,.5); padding-left:12px; color:#c9d0d8; font-size:15px; }
+  .praktyka b { color: var(--accent); font-weight:700; }
+  code { background:rgba(255,255,255,.06); padding:1px 5px; border-radius:4px; font-size:.92em; }
+  .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+  .tag { font-size:11px; padding:2px 8px; border:1px solid var(--line); border-radius:999px; color:var(--muted); }
+  .empty { color: var(--muted); padding: 20px 0; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../">← wróć do wizytówki</a>
+  <h1>Wiedza</h1>
+  <p class="lead">Pojęcia, których używam na co dzień — z tym, jak wyglądały u mnie w praktyce. Wpisz <code>/</code>, żeby szukać.</p>
+
+  <input class="search" id="q" type="search" placeholder="Szukaj: selinux, timer, nginx, zabbix…" aria-label="Szukaj w encyklopedii">
+  <p class="count" id="count"></p>
+
+  <div id="list">
+
+  <article id="selinux">
+    <h2>SELinux i etykiety</h2>
+    <p class="meta">bezpieczeństwo · Linux</p>
+    <p>SELinux to mechanizm obowiązkowej kontroli dostępu w jądrze Linuksa. Każdy plik i proces ma etykietę (kontekst), a polityka decyduje, kto z kim może rozmawiać — niezależnie od uprawnień <code>chmod</code>. Tryb <code>enforcing</code> blokuje, <code>permissive</code> tylko loguje.</p>
+    <p class="praktyka"><b>U mnie:</b> nginx zwracał 403 po skopiowaniu katalogu strony do <code>/opt</code>. Uprawnienia były poprawne, ale pliki miały etykietę katalogu domowego. Rozwiązanie: <code>restorecon -Rv /opt/strona</code>. Od tego czasu sprawdzam <code>ls -Z</code>, zanim zacznę szukać w uprawnieniach.</p>
+    <div class="tags"><span class="tag">SELinux</span><span class="tag">restorecon</span><span class="tag">nginx</span></div>
+  </article>
+
+  <article id="systemd">
+    <h2>systemd: usługi i timery</h2>
+    <p class="meta">system · Linux</p>
+    <p>Usługa (<code>.service</code>) opisuje proces, który ma działać; timer (<code>.timer</code>) zastępuje crona i uruchamia usługę według harmonogramu. Timer ma tę przewagę, że widać jego stan w <code>systemctl list-timers</code>, a logi trafiają do <code>journalctl</code> razem z resztą.</p>
+    <p class="praktyka"><b>U mnie:</b> trzy timery na serwerze — metryki co minutę (7 dni historii), nocna kopia bazy i świata gry z sumami SHA-256 (14 dni) oraz odnawianie certyfikatu. Diagnostyka zawsze przez <code>journalctl -u nazwa -n 50</code>.</p>
+    <div class="tags"><span class="tag">systemd</span><span class="tag">timer</span><span class="tag">journalctl</span></div>
+  </article>
+
+  <article id="nginx">
+    <h2>nginx jako reverse proxy</h2>
+    <p class="meta">sieć · usługi</p>
+    <p>nginx przyjmuje ruch na porcie 80/443 i przekazuje go do aplikacji działającej lokalnie (np. gunicorna). Po drodze dodaje HTTP/2, kompresję gzip i nagłówki cache. Aplikacja nie musi wtedy obsługiwać TLS ani plików statycznych.</p>
+    <p class="praktyka"><b>U mnie:</b> Django i gunicorn za nginxem, z osobnymi nagłówkami cache dla zasobów z numerem wersji i dla modułów ES — te drugie muszą mieć krótki cache, inaczej przeglądarka trzyma starą wersję.</p>
+    <div class="tags"><span class="tag">nginx</span><span class="tag">reverse proxy</span><span class="tag">HTTP/2</span></div>
+  </article>
+
+  <article id="zabbix">
+    <h2>Zabbix: hosty, szablony, triggery</h2>
+    <p class="meta">monitoring</p>
+    <p>Host to monitorowana maszyna, szablon definiuje, co zbierać, a trigger to warunek, który zamienia dane w alert. Agent zbiera metryki lokalnie, serwer je przechowuje i liczy progi.</p>
+    <p class="praktyka"><b>U mnie:</b> samodzielne wdrożenie u klienta zewnętrznego — od instalacji, przez konfigurację hostów i szablonów, po przekazanie wiedzy użytkownikom. Najwięcej czasu zajęło nie uruchomienie, a ustalenie, co ma być alarmem, a co tylko wykresem.</p>
+    <div class="tags"><span class="tag">Zabbix</span><span class="tag">monitoring</span><span class="tag">alerty</span></div>
+  </article>
+
+  <article id="ansible">
+    <h2>Ansible: playbooki i inventory</h2>
+    <p class="meta">automatyzacja</p>
+    <p>Ansible wykonuje zadania przez SSH, bez agenta na maszynie docelowej. <code>Inventory</code> mówi, na czym pracować, <code>playbook</code> — co zrobić, a role pakietują to w wielokrotnie używalne moduły. Kluczowa zaleta: idempotencja, czyli powtórne uruchomienie nie psuje stanu.</p>
+    <p class="praktyka"><b>U mnie:</b> integracja Zabbixa z Ansiblem w repozytorium <code>ansible_zabbix</code> — playbooki do instalacji agentów i inventory budowane na podstawie hostów z Zabbixa.</p>
+    <div class="tags"><span class="tag">Ansible</span><span class="tag">playbook</span><span class="tag">idempotencja</span></div>
+  </article>
+
+  <article id="kopie">
+    <h2>Kopie zapasowe i sumy SHA-256</h2>
+    <p class="meta">bezpieczeństwo · dane</p>
+    <p>Kopia bez sprawdzenia to nie kopia, tylko nadzieja. Suma kontrolna SHA-256 pozwala wykryć, że plik zmienił się w transporcie albo że archiwum jest ucięte. Drugą stroną medalu jest retencja — ile kopii trzymać i jak często je rotować.</p>
+    <p class="praktyka"><b>U mnie:</b> nocna kopia bazy i świata gry, 14 dni wstecz, każda z sumą SHA-256 zapisywaną obok archiwum.</p>
+    <div class="tags"><span class="tag">backup</span><span class="tag">SHA-256</span><span class="tag">retencja</span></div>
+  </article>
+
+  <article id="lvm">
+    <h2>LVM i powiększanie dysku na żywo</h2>
+    <p class="meta">system · dyski</p>
+    <p>LVM dzieli przestrzeń na wolumeny fizyczne (PV), grupy (VG) i logiczne (LV). Dzięki temu powiększenie dysku w chmurze nie wymaga reinstalacji: powiększasz partycję, potem PV, LV i system plików — wszystko na działającym systemie.</p>
+    <p class="praktyka"><b>U mnie:</b> po zwiększeniu wolumenu w Oracle Cloud: <code>growpart /dev/sda 2</code>, <code>pvresize</code>, <code>lvextend -l +100%FREE</code>, <code>resize2fs</code> — bez restartu i bez przerwy w działaniu usług.</p>
+    <div class="tags"><span class="tag">LVM</span><span class="tag">growpart</span><span class="tag">lvextend</span></div>
+  </article>
+
+  <article id="tls">
+    <h2>Let's Encrypt i odnawianie certyfikatów</h2>
+    <p class="meta">bezpieczeństwo · sieć</p>
+    <p>Certyfikat TLS potwierdza tożsamość serwera i szyfruje ruch. Let's Encrypt wydaje je darmowo na 90 dni, więc kluczowa jest automatyzacja odnowienia — ręczne odnawianie zawsze zostanie zapomniane i któregoś dnia wygaśnie.</p>
+    <p class="praktyka"><b>U mnie:</b> certbot z timerem systemd; po odnowieniu nginx przeładowuje konfigurację. Testuję, czy data ważności faktycznie się przesuwa, a nie tylko czy timer „wystartował”.</p>
+    <div class="tags"><span class="tag">TLS</span><span class="tag">certbot</span><span class="tag">HTTPS</span></div>
+  </article>
+
+  <article id="ssh">
+    <h2>Tunel SSH i bramkowanie dostępu</h2>
+    <p class="meta">sieć · bezpieczeństwo</p>
+    <p>Zamiast otwierać kolejne porty na świat, można przekierować je przez SSH: <code>ssh -L 8080:localhost:8080 serwer</code> daje dostęp do usługi tak, jakby działała lokalnie. Po drugiej stronie nginx może dodatkowo sprawdzać sesję przez <code>auth_request</code>.</p>
+    <p class="praktyka"><b>U mnie:</b> na serwerze otwarte są tylko SSH, HTTP, HTTPS i port gry. Do podglądów stron klientów prowadzi ścieżka bramkowana przez <code>auth_request</code> — bez logowania w Django nie zobaczysz pliku.</p>
+    <div class="tags"><span class="tag">SSH</span><span class="tag">tunel</span><span class="tag">auth_request</span></div>
+  </article>
+
+  </div>
+
+  <p class="empty" id="empty" hidden>Nic nie znalazłem. Spróbuj krótszego hasła.</p>
+
+  <footer>
+    Kacper Pietrusiewicz · <a href="../">wizytówka</a> · <a href="../projekty.html">projekty</a> · <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var q = document.getElementById("q");
+  var arts = Array.prototype.slice.call(document.querySelectorAll("#list article"));
+  var count = document.getElementById("count");
+  var empty = document.getElementById("empty");
+
+  function filtruj() {
+    var s = (q.value || "").trim().toLowerCase();
+    var widoczne = 0;
+    arts.forEach(function (a) {
+      var ok = s === "" || a.textContent.toLowerCase().indexOf(s) !== -1;
+      a.hidden = !ok;
+      if (ok) widoczne++;
+    });
+    count.textContent = s === ""
+      ? arts.length + " haseł"
+      : widoczne + " z " + arts.length + " haseł";
+    empty.hidden = widoczne !== 0;
+  }
+
+  q.addEventListener("input", filtruj);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+    if (e.key === "Escape" && document.activeElement === q) { q.value = ""; filtruj(); q.blur(); }
+  });
+  filtruj();
+})();
+</script>
+</body>
+</html>
