@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo — zabbix-vim w akcji</title>
+<meta name="description" content="Interaktywne demo rozszerzenia zabbix-vim: nawigacja po interfejsie Zabbixa klawiszami vima, tryb hint (f) i paleta poleceń (:).">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; --line:rgba(255,255,255,.12);
+    --zbx-red:#d32f2f; --zbx-dark:#1f2c33; --zbx-panel:#26343c;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background: radial-gradient(70% 50% at 12% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16px; line-height:1.6;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 1000px; margin:0 auto; }
+  a { color: var(--accent); }
+  .back { font-size:13px; color:var(--muted); text-decoration:none; }
+  h1 { font-size: clamp(24px,3.6vw,34px); font-weight:900; letter-spacing:-.03em; margin:18px 0 6px; }
+  .lead { color:var(--muted); margin:0 0 8px; }
+  .keys { display:flex; flex-wrap:wrap; gap:8px; margin:16px 0 26px; }
+  .kbd {
+    font-family:"JetBrains Mono",monospace; font-size:12px; padding:4px 9px;
+    border:1px solid var(--line); border-radius:7px; color:#cfd5dd; background:rgba(255,255,255,.04);
+  }
+  .frame {
+    border:1px solid var(--line); border-radius:14px; overflow:hidden;
+    box-shadow: 0 30px 80px -40px rgba(0,0,0,.9);
+  }
+  .hintbar {
+    display:flex; gap:8px; align-items:center; padding:9px 14px; font-size:12.5px; color:var(--muted);
+    background:rgba(255,255,255,.03); border-bottom:1px solid var(--line);
+  }
+  .dot { width:9px; height:9px; border-radius:50%; background:var(--accent); }
+
+  /* ---- atrapa interfejsu Zabbixa ---- */
+  .zbx { background:var(--zbx-dark); color:#d7dee4; font-family: Lato, system-ui, sans-serif; }
+  .zbx-top { background:var(--zbx-red); padding:10px 16px; display:flex; align-items:center; gap:16px; }
+  .zbx-logo { font-weight:900; letter-spacing:.02em; color:#fff; font-size:15px; }
+  .zbx-top nav { display:flex; gap:14px; flex-wrap:wrap; }
+  .zbx-top nav a { color:#ffdede; font-size:13px; text-decoration:none; padding:2px 0; border-bottom:2px solid transparent; }
+  .zbx-top nav a:hover { border-bottom-color:#fff; color:#fff; }
+  .zbx-body { display:grid; grid-template-columns: 190px 1fr; min-height:420px; }
+  .zbx-side { background:#18232a; padding:14px 0; border-right:1px solid rgba(255,255,255,.07); }
+  .zbx-side a { display:block; padding:7px 16px; color:#aab7c1; font-size:13.5px; text-decoration:none; }
+  .zbx-side a:hover, .zbx-side a.active { background:rgba(211,47,47,.18); color:#fff; box-shadow: inset 3px 0 0 var(--zbx-red); }
+  .zbx-main { padding:16px 18px 22px; }
+  .zbx-h2 { font-size:15px; font-weight:700; margin:0 0 12px; color:#e8eef2; }
+  .zbx-tools { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+  .zbx-btn {
+    font: inherit; font-size:12.5px; padding:5px 11px; cursor:pointer;
+    color:#e8eef2; background:#33454f; border:1px solid #44585f; border-radius:3px;
+  }
+  .zbx-btn:hover { background:#3d525c; }
+  .zbx-btn.primary { background:var(--zbx-red); border-color:#b71c1c; color:#fff; }
+  table.zbx-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .zbx-table th { text-align:left; font-weight:600; color:#9fb0ba; padding:7px 8px; border-bottom:1px solid rgba(255,255,255,.12); }
+  .zbx-table td { padding:7px 8px; border-bottom:1px solid rgba(255,255,255,.06); }
+  .zbx-table a { color:#8fc7ff; text-decoration:none; }
+  .zbx-table a:hover { text-decoration:underline; }
+  .ok { color:#7ed492; } .warn { color:#e5b567; } .bad { color:#e57373; }
+  @media (max-width: 720px) { .zbx-body { grid-template-columns:1fr; } .zbx-side { display:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../..">← wróć do wizytówki</a>
+  <h1>zabbix-vim — demo w akcji</h1>
+  <p class="lead">To prawdziwe rozszerzenie, tylko uruchomione na atrapie interfejsu Zabbixa. Bez instalacji.</p>
+
+  <div class="keys">
+    <span class="kbd">f</span><span class="kbd">etykiety na linkach</span>
+    <span class="kbd">:</span><span class="kbd">paleta poleceń</span>
+    <span class="kbd">gg / gh / gp</span><span class="kbd">skoki</span>
+    <span class="kbd">Esc</span><span class="kbd">tryb normalny</span>
+  </div>
+
+  <div class="frame">
+    <div class="hintbar"><span class="dot"></span> atrapa Zabbixa 7.0 · rozszerzenie aktywne — naciśnij <b>&nbsp;f&nbsp;</b> albo <b>&nbsp;:&nbsp;</b></div>
+
+    <div class="zbx">
+      <div class="zbx-top">
+        <span class="zbx-logo">ZABBIX</span>
+        <nav>
+          <a href="zabbix.php?action=host.list">Hosts</a>
+          <a href="zabbix.php?action=problem.view">Problems</a>
+          <a href="zabbix.php?action=latest.view">Latest data</a>
+          <a href="zabbix.php?action=trigger.list">Triggers</a>
+          <a href="zabbix.php?action=report.status">Reports</a>
+        </nav>
+      </div>
+
+      <div class="zbx-body">
+        <div class="zbx-side">
+          <a href="zabbix.php?action=dashboard.view" class="active">Dashboard</a>
+          <a href="zabbix.php?action=host.list">Hosts</a>
+          <a href="zabbix.php?action=problem.view">Problems</a>
+          <a href="zabbix.php?action=latest.view">Latest data</a>
+          <a href="zabbix.php?action=trigger.list">Triggers</a>
+          <a href="zabbix.php?action=graph.list">Graphs</a>
+          <a href="zabbix.php?action=report.status">Reports</a>
+          <a href="zabbix.php?action=user.list">Users</a>
+        </div>
+
+        <div class="zbx-main">
+          <h2 class="zbx-h2">Hosts</h2>
+          <div class="zbx-tools">
+            <button class="zbx-btn primary" type="button">Create host</button>
+            <button class="zbx-btn" type="button">Apply</button>
+            <button class="zbx-btn" type="button">Reset</button>
+            <button class="zbx-btn" type="button">Export</button>
+          </div>
+          <table class="zbx-table">
+            <thead>
+              <tr><th>Host</th><th>Interface</th><th>Availability</th><th>Tags</th><th>Status</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="zabbix.php?action=host.edit&amp;hostid=10084">oracle-cloud</a></td>
+                <td>10.0.0.70:10050</td>
+                <td class="ok">Available</td>
+                <td>linux, cloud</td>
+                <td class="ok">Enabled</td>
+              </tr>
+              <tr>
+                <td><a href="zabbix.php?action=host.edit&amp;hostid=10085">unixsupport-client</a></td>
+                <td>192.168.10.4:10050</td>
+                <td class="ok">Available</td>
+                <td>rhel, client</td>
+                <td class="ok">Enabled</td>
+              </tr>
+              <tr>
+                <td><a href="zabbix.php?action=host.edit&amp;hostid=10086">backup-node</a></td>
+                <td>192.168.10.9:10050</td>
+                <td class="warn">Unknown</td>
+                <td>backup</td>
+                <td class="warn">Disabled</td>
+              </tr>
+              <tr>
+                <td><a href="zabbix.php?action=host.edit&amp;hostid=10087">luanti-game</a></td>
+                <td>10.0.0.70:30000</td>
+                <td class="bad">Not available</td>
+                <td>game, udp</td>
+                <td class="ok">Enabled</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="lead" style="margin-top:22px">
+    Kod, testy i zrzuty z prawdziwej instancji:
+    <a href="https://github.com/pietrusiewicz/zabbix-vim" target="_blank" rel="noopener">github.com/pietrusiewicz/zabbix-vim</a>
+  </p>
+</div>
+
+<script src="content.js"></script>
+</body>
+</html>
