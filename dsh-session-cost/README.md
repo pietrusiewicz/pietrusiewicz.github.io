@@ -39,6 +39,21 @@ localStorage.setItem('dsh-session-cost:rates', JSON.stringify({
 
 The plugin is a package directory, not an npm bundle. The installer copies it to `$DSH_HOME/plugins/dsh-session-cost`, adds one loader entry to the profile's `cordis.patch.yml`, and keeps a timestamped backup of that file. It defaults to the `web` profile and is safe to run again.
 
+### Desktop app (clickable)
+
+Prefer clicking to typing? Download the installer from the [desktop installer release](https://github.com/pietrusiewicz/pietrusiewicz.github.io/releases/tag/desktop-v0.1.0):
+
+- **Windows x64:** `dsh-session-cost-installer-windows-x64.exe` — double-click it.
+- **Linux x64 / arm64:** `dsh-session-cost-installer-linux-x64.tar.gz` or `...-linux-arm64.tar.gz` — extract and run `./dsh-session-cost-installer`. Linux needs WebKitGTK (`webkit2gtk-4.1`).
+
+The app detects `DSH_HOME` (or `~/.dsh`), lets you choose the home directory and profile, installs or uninstalls the plugin, and shows the managed file paths. It is a small Neutralino app built from [`desktop/`](desktop/); rebuild it with:
+
+```bash
+cd desktop
+npm install
+npm run build
+```
+
 ### One-line install
 
 No clone and no file left in Downloads: the bootstrap downloads the repository into a temporary directory, installs the plugin, and removes the temporary files.
@@ -122,6 +137,7 @@ Uninstall removes the managed entry and the installed plugin directory, and leav
 | `lib/index.js` | Host loader entry (no Host-side behavior) |
 | `package.json` | Package metadata and `dsh.client` declaration |
 | `install/` | Linux/macOS shell and Windows PowerShell install/uninstall scripts |
+| `desktop/` | Neutralino desktop installer (Windows and Linux binaries) |
 
 ## Limitations
 
