@@ -1119,6 +1119,7 @@
         ["cat kontakt.txt", "jak się ze mną skontaktować"],
         ["ls", "co jest w katalogu domowym"],
         ["projekty", "otwórz opis projektów"],
+        ["aplikacje", "katalog aplikacji na Androida"],
         ["wiedza", "encyklopedia pojęć, których używam"],
         ["zabbix-vim", "demo mojego rozszerzenia do Zabbixa"],
         ["man <hasło>", "np. man selinux, man nginx"],
@@ -1126,7 +1127,7 @@
         ["lang", "przełącz na English"],
         ["clear", "wyczyść ekran"]
       ],
-      ls: "cv.txt   kontakt.txt   projekty/   wiedza/   demo/",
+      ls: "cv.txt   kontakt.txt   projekty/   aplikacje/   wiedza/   demo/",
       cv: [
         "<span class='c-key'>Kacper Pietrusiewicz</span> — administrator systemów Linux",
         "",
@@ -1173,6 +1174,7 @@
         ["cat kontakt.txt", "how to reach me"],
         ["ls", "what's in the home directory"],
         ["projekty", "open the projects page"],
+        ["aplikacje", "Android app catalogue"],
         ["wiedza", "encyclopedia of terms I use"],
         ["zabbix-vim", "demo of my Zabbix extension"],
         ["man <term>", "e.g. man selinux, man nginx"],
@@ -1180,7 +1182,7 @@
         ["lang", "switch to Polish"],
         ["clear", "clear the screen"]
       ],
-      ls: "cv.txt   kontakt.txt   projekty/   wiedza/",
+      ls: "cv.txt   kontakt.txt   projekty/   aplikacje/   wiedza/",
       cv: [
         "<span class='c-key'>Kacper Pietrusiewicz</span> — Linux systems administrator",
         "",
@@ -1347,6 +1349,10 @@
       line(t().kontakt.join("\n"));
     } else if (c === "projekty" || c === "cat projekty.txt" || c === "projects") {
       line(t().projekty);
+    } else if (c === "aplikacje" || c === "apps" || c === "apki") {
+      line(lang === "pl"
+        ? "Katalog aplikacji na Androida: <a href='aplikacje/'>aplikacje/</a>"
+        : "Android app catalogue: <a href='aplikacje/'>aplikacje/</a>");
     } else if (c === "status") {
       line(t().status);
       var t0 = performance.now();

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aplikacje — Kacper Pietrusiewicz</title>
+<meta name="description" content="Darmowe aplikacje na Androida: bez reklam, bez konta i bez wysyłania danych.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<h1><span lang="pl">Aplikacje</span><span lang="en">Apps</span></h1>
+<p class="lead">
+  <span lang="pl">Darmowe aplikacje na Androida — bez reklam, bez konta i bez wysyłania danych na zewnątrz. Pliki instalacyjne leżą na GitHubie, więc pobieranie nie obciąża mojego serwera.</span>
+  <span lang="en">Free Android apps — no ads, no account, nothing sent off the device. Installers live on GitHub, so downloads don't load my server.</span>
+</p>
+
+<div class="siatka">
+  
+  <a class="karta bez-linii" href="kuchnia/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/kuchnia.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">Patelnia</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Przepisy z całego świata. Powiedz, ile masz czasu, a Patelnia pokaże, co zdążysz ugotować.</span>
+      <span lang="en">30 recipes from around the world. Tell it how much time you have and the pan shows what you can cook.</span>
+    </p>
+    <div class="karta__meta">Android 1.8.1 · 8.9 MB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="bklasahero/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/bklasahero.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">B-Klasa Hero</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Rzuty karne i kariera w polskiej piramidzie piłkarskiej. W 100% offline.</span>
+      <span lang="en">Penalty shootouts and a career in the Polish football pyramid. 100% offline.</span>
+    </p>
+    <div class="karta__meta">Android 0.1.4 · 3.5 MB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="ascend/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/ascend.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">Ascend</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Pomocnik do medytacji: plan rosnących sesji, licznik z dzwonkiem, prowadzenie oddechu, myśli pisane albo dyktowane, dziennik nastroju i statystyki. Bez konta i bez reklam.</span>
+      <span lang="en">A meditation helper: a growing-session plan, a timer with a bell, guided breathing, thoughts you can type or dictate, a mood journal, and stats. No account, no ads.</span>
+    </p>
+    <div class="karta__meta">Android 0.11.0 · 9.1 MB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="an98scope/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/an98scope.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">AN98 Scope</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Kamera endoskopowa AN98 (USB UVC) na telefonie: podgląd na żywo, zdjęcia, nagrywanie MP4, zoom i obrót obrazu. Rdzeń w natywnym C++.</span>
+      <span lang="en">The AN98 USB UVC endoscope on your phone: live preview, photos, MP4 recording, zoom and image rotation. Native C++ core.</span>
+    </p>
+    <div class="karta__meta">Android 1.0.0 · 17.1 MB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="meczowka/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/meczowka.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">Meczówka</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Kartka sędziowska do wydruku 10 × 15 cm: obsada z imionami i nazwiskami, okręgami i danymi meczu. Trzy schematy rozłożenia (tabela, boisko, lista) i plik JPG gotowy na odbitkę w Rossmannie. Bez sieci i bez konta.</span>
+      <span lang="en">A referee card for a 10 × 15 cm print: the crew with full names, regions and match details. Three layout schemes (table, pitch, list) and a JPG ready for a photo print. No network, no account.</span>
+    </p>
+    <div class="karta__meta">Android 0.3.0 · 8.4 MB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="mergecup/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/mergecup.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">Merge Cup</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Dotykasz ekranu i puszczasz — kulka wpada do pudła. Dwie takie same łączą się w większą. Łącz seriami, żeby zbijać combo do x8, i nie pozwól, żeby kulka wypadła bokiem. Jedenaście poziomów, rekord na telefonie. Bez reklam i bez internetu.</span>
+      <span lang="en">Touch the screen and let go — the ball drops into the box. Two of a kind join into a bigger one. Chain merges for a combo up to x8 and keep balls from falling out the side. Eleven levels, best score on the phone. No ads, no internet.</span>
+    </p>
+    <div class="karta__meta">Android 0.16.0 · 777 KB</div>
+  </a>
+  
+  <a class="karta bez-linii" href="pstrykscan/">
+    <div class="karta__gora">
+      <img class="karta__ikona" src="media/pstrykscan-logo.png" alt="" width="56" height="56" loading="lazy">
+      <h2 class="karta__nazwa">PstrykScan</h2>
+    </div>
+    <p class="karta__opis">
+      <span lang="pl">Skan 3D z telefonu bez internetu: seria zdjęć i model punktowy (GLB) liczony na urządzeniu. Rdzeń SfM w natywnym C++.</span>
+      <span lang="en">Phone 3D scanning with no network: a burst of photos and a point-cloud model (GLB) reconstructed on the device. Native C++ SfM core.</span>
+    </p>
+    <div class="karta__meta">Android 0.3.1 · 5.4 MB</div>
+  </a>
+  
+</div>
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../">wizytówka</a> ·
+    <a href="../projekty.html">projekty</a> ·
+    <a href="../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>

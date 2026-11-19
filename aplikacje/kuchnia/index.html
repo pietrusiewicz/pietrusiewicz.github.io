@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patelnia — Kacper Pietrusiewicz</title>
+<meta name="description" content="Przepisy z całego świata. Powiedz, ile masz czasu, a Patelnia pokaże, co zdążysz ugotować.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<a class="back" href="../">← <span lang="pl">aplikacje</span><span lang="en">apps</span></a>
+<div class="naglowek-aplikacji">
+  <img src="../media/kuchnia.png" alt="" width="76" height="76">
+  <div>
+    <h1>Patelnia</h1>
+    <p class="meta">Kuchnia i przepisy · Android</p>
+  </div>
+</div>
+
+<article>
+  <h2><span lang="pl">Opis</span><span lang="en">About</span></h2>
+  <p class="opis">
+    <span lang="pl">Patelnia to przepisy z całego świata w jednym miejscu: od polskich pierogów i włoskiej carbonary po pad thai, bibimbap i wietnamskie pho.
+
+Zamiast przeglądać setki pozycji klikasz patelnię na dole ekranu i wybierasz, ile masz czasu: 15, 30, 45 albo 60 minut. Lista od razu zawęża się do dań, które zdążysz przygotować od początku do końca.
+
+• 30 przepisów z 13 kuchni świata — zdjęcie, składniki, kroki i czas przygotowania
+• filtry w dolnym menu: poziom trudności i siatka czasów 15 / 30 / 45 / 60 min
+• szczegóły przepisu: składniki, numerowane kroki, kalorie, dieta
+• dodawanie dań z internetu: klucz Spoonaculara pobiera do 300 przepisów, nowe dochodzą bez duplikatów i można je usunąć
+• działa offline, bez reklam i bez konta
+
+Po wpisaniu klucza API (Spoonacular, Edamam albo TheMealDB) pobierzesz dodatkowe przepisy przyciskiem w Ustawieniach — zostają w pamięci telefonu i działają też offline.</span>
+    <span lang="en">Patelnia gathers recipes from around the world in one place: from Polish pierogi and Italian carbonara to pad thai, bibimbap and Vietnamese pho.
+
+Instead of browsing hundreds of entries, tap the pan button at the bottom of the screen and pick how much time you have: 15, 30, 45 or 60 minutes. The list immediately narrows down to dishes you can actually finish.
+
+• 30 recipes from 13 world cuisines — photo, ingredients, steps and cooking time
+• bottom menu filters: difficulty level and a 15 / 30 / 45 / 60 min time grid
+• recipe details: ingredients, numbered steps, calories, diet
+• add dishes from the web: a Spoonacular key downloads up to 300 recipes at a time, new ones are merged without duplicates and can be removed
+• fully offline, no ads, no account
+
+Enter an API key (Spoonacular, Edamam or TheMealDB) to download extra recipes from the Settings screen — they are cached on the phone and work offline.</span>
+  </p>
+</article>
+
+
+<article>
+  <h2><span lang="pl">Pobierz</span><span lang="en">Download</span></h2>
+  <div class="pobrania">
+    
+    <a class="pobierz" href="https://github.com/pietrusiewicz/apps/releases/download/kuchnia-v1.8.1/kuchnia-1.8.1-android-arm64.apk" download>
+      <span>Android (APK)</span>
+      <small>1.8.1 · 8.9 MB</small>
+    </a>
+    
+  </div>
+  
+  <p class="suma">SHA-256 <code>f34a8af817c7286341af6454681825f5aab71c763002b4c2eedea51eb8fc20ee</code></p>
+  
+  <p class="suma">
+    <span lang="pl">Instalacja: pobierz plik i otwórz go na telefonie; Android zapyta o zgodę na instalację spoza sklepu. Starsze wersje i changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/kuchnia-v1.8.1">wydanie na GitHubie</a>.</span>
+    <span lang="en">Install: download the file and open it on the phone; Android will ask to allow installs from outside the store. Older versions and changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/kuchnia-v1.8.1">release on GitHub</a>.</span>
+  </p>
+</article>
+
+
+
+
+
+<article>
+  <h2><span lang="pl">Historia wersji</span><span lang="en">Version history</span></h2>
+  <ul class="historia">
+    
+    <li>
+      <h3>1.8.1</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">10 nowych dań mięsnych: kotlet schabowy, gulasz wołowy, żeberka w miodzie, kotlety mielone, karkówka pieczona, kurczak z cytryną, stek, kaczka z jabłkami, indyk w sosie i wątróbka z cebulą (baza: 46 → 56 dań). Nowa nazwa i logo: Patelnia (patelnia z jajkiem sadzonym, widok z góry). Składniki mają rysunkowe ikony (19 wzorów: pomidor, jajko, ser, makaron, ryba, krewetka, ziele…), a przycisk „+” dodaje składnik do listy zakupów w bazie SQLite. Lista zakupów animuje oznaczenie kupionego (przekreślenie i wygaszenie), ma licznik na ikonie koszyka i czyszczenie kupionych. Miniatury dla wszystkich 46 przepisów (16 nowych zdjęć z Wikimedia Commons, licencje CC0/CC BY/CC BY-SA). Skrypt `pobierz_miniatury.py --brakujace` dorabia brakujące zdjęcia automatycznie, a test jednostkowy nie pozwoli wydać wersji bez miniatury. 16 nowych szybkich przepisów wbudowanych — filtr „do 15 min” ma teraz 18 dań zamiast 2 (tosty, omlety, sałatki, krewetki, koktajl). Naprawione puste strony przy pobieraniu (offset liczony z totalResults) i czytelniejszy komunikat o wyczerpanym limicie. Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.8.0</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Nowa nazwa i logo: Patelnia (patelnia z jajkiem sadzonym, widok z góry). Składniki mają rysunkowe ikony (19 wzorów: pomidor, jajko, ser, makaron, ryba, krewetka, ziele…), a przycisk „+” dodaje składnik do listy zakupów w bazie SQLite. Lista zakupów animuje oznaczenie kupionego (przekreślenie i wygaszenie), ma licznik na ikonie koszyka i czyszczenie kupionych. Miniatury dla wszystkich 46 przepisów (16 nowych zdjęć z Wikimedia Commons, licencje CC0/CC BY/CC BY-SA). Skrypt `pobierz_miniatury.py --brakujace` dorabia brakujące zdjęcia automatycznie, a test jednostkowy nie pozwoli wydać wersji bez miniatury. 16 nowych szybkich przepisów wbudowanych — filtr „do 15 min” ma teraz 18 dań zamiast 2 (tosty, omlety, sałatki, krewetki, koktajl). Naprawione puste strony przy pobieraniu (offset liczony z totalResults) i czytelniejszy komunikat o wyczerpanym limicie. Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.7.0</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Składniki mają rysunkowe ikony (19 wzorów: pomidor, jajko, ser, makaron, ryba, krewetka, ziele…), a przycisk „+” dodaje składnik do listy zakupów w bazie SQLite. Lista zakupów animuje oznaczenie kupionego (przekreślenie i wygaszenie), ma licznik na ikonie koszyka i czyszczenie kupionych. Miniatury dla wszystkich 46 przepisów (16 nowych zdjęć z Wikimedia Commons, licencje CC0/CC BY/CC BY-SA). Skrypt `pobierz_miniatury.py --brakujace` dorabia brakujące zdjęcia automatycznie, a test jednostkowy nie pozwoli wydać wersji bez miniatury. 16 nowych szybkich przepisów wbudowanych — filtr „do 15 min” ma teraz 18 dań zamiast 2 (tosty, omlety, sałatki, krewetki, koktajl). Naprawione puste strony przy pobieraniu (offset liczony z totalResults) i czytelniejszy komunikat o wyczerpanym limicie. Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.6.1</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Miniatury dla wszystkich 46 przepisów (16 nowych zdjęć z Wikimedia Commons, licencje CC0/CC BY/CC BY-SA). Skrypt `pobierz_miniatury.py --brakujace` dorabia brakujące zdjęcia automatycznie, a test jednostkowy nie pozwoli wydać wersji bez miniatury. 16 nowych szybkich przepisów wbudowanych — filtr „do 15 min” ma teraz 18 dań zamiast 2 (tosty, omlety, sałatki, krewetki, koktajl). Naprawione puste strony przy pobieraniu (offset liczony z totalResults) i czytelniejszy komunikat o wyczerpanym limicie. Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.6.0</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">16 nowych szybkich przepisów wbudowanych — filtr „do 15 min” ma teraz 18 dań zamiast 2 (tosty, omlety, sałatki, krewetki, koktajl). Naprawione puste strony przy pobieraniu (offset liczony z totalResults) i czytelniejszy komunikat o wyczerpanym limicie. Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.5.0</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Każde pobranie uzupełnia teraz najsłabszy kubełek czasu (do 15/30/45/60 min) — filtr 15 minut przestaje być pusty, bo zapytanie idzie z maxReadyTime. Ustawienia pokazują liczniki dań na kubełek. Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.4.1</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Pobieranie pomija dania, które już są w bazie SQLite — istniejący wiersz zostaje nietknięty, więc nic się nie dubluje ani nie nadpisuje. Komunikat mówi, ile dodano, a ile pominięto. Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.4.0</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Dodawanie dań z internetu: przycisk w Ustawieniach pobiera do 300 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Pobrane dania trafiają do bazy SQLite (`kuchnia.db`), więc nie dublują się przy kolejnych pobraniach i działają offline. Aplikacja pilnuje dziennego limitu API i pokazuje, ile punktów zostało.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads up to 300 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are stored in a SQLite database (`kuchnia.db`), so they never duplicate and work offline. The app respects the API daily quota and shows how many points are left.</p>
+    </li>
+    
+    <li>
+      <h3>1.3.2</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Dodawanie dań z internetu: przycisk w Ustawieniach pobiera 100 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Odrzucony klucz i wyczerpany limit mają własne komunikaty. Pobrane dania trafiają do pamięci telefonu i działają offline.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads 100 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are cached on the phone and work offline.</p>
+    </li>
+    
+    <li>
+      <h3>1.3.1</h3>
+      <time>11 November 2026</time>
+      <p lang="pl">Dodawanie dań z internetu: przycisk w Ustawieniach pobiera 20 przepisów ze Spoonaculara (bez powtarzania tych samych — za każdym razem inny zestaw), scala je z już pobranymi bez duplikatów, pokazuje licznik i pozwala usunąć całość. Odrzucony klucz i wyczerpany limit mają własne komunikaty. Pobrane dania trafiają do pamięci telefonu i działają offline.</p>
+      <p lang="en">Add dishes from the web: a button in Settings downloads 20 recipes from Spoonacular (a different set each time), merges them with what is already downloaded without duplicates, shows the count and lets you remove them. A rejected key and an exhausted quota have their own messages. Downloaded dishes are cached on the phone and work offline.</p>
+    </li>
+    
+  </ul>
+</article>
+
+
+
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../../">wizytówka</a> ·
+    <a href="../../projekty.html">projekty</a> ·
+    <a href="../../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>

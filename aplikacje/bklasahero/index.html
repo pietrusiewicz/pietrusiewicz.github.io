@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B-Klasa Hero — Kacper Pietrusiewicz</title>
+<meta name="description" content="Rzuty karne i kariera w polskiej piramidzie piłkarskiej. W 100% offline.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<a class="back" href="../">← <span lang="pl">aplikacje</span><span lang="en">apps</span></a>
+<div class="naglowek-aplikacji">
+  <img src="../media/bklasahero.png" alt="" width="76" height="76">
+  <div>
+    <h1>B-Klasa Hero</h1>
+    <p class="meta">Gry · Android</p>
+  </div>
+</div>
+
+<article>
+  <h2><span lang="pl">Opis</span><span lang="en">About</span></h2>
+  <p class="opis">
+    <span lang="pl">Mobilna gra piłkarska w całości offline. Zaczynasz od B klasy, strzelasz karne (fizyka: grawitacja, opór, efekt Magnusa, słupki i poprzeczka), zbierasz punkty i awansujesz przez 8 poziomów aż do Ekstraklasy. Proceduralne nazwy klubów i ok. 7 800 polskich miejscowości z OpenStreetMap. Zero uprawnień, zero sieci, zero reklam.
+
+Menu główne ma przesuwane zakładki (tabela, terminarz, kariera), a przed pierwszym rzutem karnym zobaczysz zapowiedź meczu: nazwy klubów, miejscowości obu drużyn, odległość między nimi i mapkę okolicznych klubów.
+
+Uwaga: wersja 0.1.2 jest podpisana nowym kluczem. Jeśli masz zainstalowaną 0.1.0, odinstaluj ją przed instalacją tej wersji — Android nie pozwala nadpisać aplikacji podpisanej innym kluczem.</span>
+    <span lang="en">A fully offline mobile football game. Start in the B class, score penalties (physics: gravity, air drag, Magnus effect, posts and crossbar), earn points and climb 8 tiers up to the top flight. Procedural club names and ~7,800 Polish towns from OpenStreetMap. Zero permissions, zero network, zero ads.
+
+The main menu has swipeable tabs (table, fixtures, career), and before the first penalty you get a match preview: both clubs, their towns, the distance between them and a map of the clubs from nearby towns.
+
+Note: 0.1.2 is signed with a new key. If you have 0.1.0 installed, uninstall it first — Android refuses to update an app signed with a different key.</span>
+  </p>
+</article>
+
+
+<article>
+  <h2><span lang="pl">Pobierz</span><span lang="en">Download</span></h2>
+  <div class="pobrania">
+    
+    <a class="pobierz" href="https://github.com/pietrusiewicz/apps/releases/download/bklasahero-v0.1.4/bklasahero-0.1.4-android-arm64.apk" download>
+      <span>Android (APK)</span>
+      <small>0.1.4 · 3.5 MB</small>
+    </a>
+    
+  </div>
+  
+  <p class="suma">SHA-256 <code>734ca3b78942e8f6d9c9254c0d31bbf1aa06c53591e31b0eacbb563be8d3e79c</code></p>
+  
+  <p class="suma">
+    <span lang="pl">Instalacja: pobierz plik i otwórz go na telefonie; Android zapyta o zgodę na instalację spoza sklepu. Starsze wersje i changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/bklasahero-v0.1.4">wydanie na GitHubie</a>.</span>
+    <span lang="en">Install: download the file and open it on the phone; Android will ask to allow installs from outside the store. Older versions and changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/bklasahero-v0.1.4">release on GitHub</a>.</span>
+  </p>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Zrzuty ekranu</span><span lang="en">Screenshots</span></h2>
+  <div class="zrzuty">
+    
+    <figure>
+      <img src="../media/bklasahero-1-menu.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Menu główne: tabela ligi</span>
+        <span lang="en">Main menu: league table</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-8-menu-terminarz.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Menu główne: terminarz</span>
+        <span lang="en">Main menu: fixtures</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-9-menu-kariera.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Menu główne: kariera i statystyki</span>
+        <span lang="en">Main menu: career and stats</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-7-zapowiedz-meczu.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Zapowiedź meczu: mapka okolicznych klubów i odległość</span>
+        <span lang="en">Match preview: nearby clubs and distance</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-2-tutorial.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Samouczek po instalacji</span>
+        <span lang="en">Tutorial</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-3-strzal.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Strzał: celownik i pasek mocy</span>
+        <span lang="en">Shooting: aim and power bar</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-4-gol.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Gol!</span>
+        <span lang="en">Goal!</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-5-obrona.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Obrona: nurkowanie bramkarza</span>
+        <span lang="en">Defending: goalkeeper dive</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/bklasahero-6-jak-bronic.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Samouczek: jak się broni</span>
+        <span lang="en">Tutorial: how to defend</span>
+      </figcaption>
+    </figure>
+    
+  </div>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Historia wersji</span><span lang="en">Version history</span></h2>
+  <ul class="historia">
+    
+    <li>
+      <h3>0.1.4</h3>
+      <time>1 November 2026</time>
+      <p lang="pl">Menu główne jak hub z FIFY: karuzela kafli Tabela / Terminarz / Kariera / Jak grać zamiast paska zakładek. Wybrany kafel podświetla się i przewija do swojej strony, a „Jak grać” otwiera samouczek prosto z menu.</p>
+      <p lang="en">Main menu reworked as a FIFA-style hub: a tile carousel (Table / Fixtures / Career / How to play) replaces the tab strip. The selected tile is highlighted and scrolls to its page, and “How to play” opens the tutorial right from the menu.</p>
+    </li>
+    
+    <li>
+      <h3>0.1.3</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Nowe logo: pieczątka „B-KLASA” z gazetki okręgowej — krzywo odbita, z piłką w błocie i drobinkami tuszu na papierze. Ikona adaptacyjna kładzie pieczątkę na papierze.</p>
+      <p lang="en">New logo: a “B-KLASA” rubber stamp from a district gazette — crooked, with a muddy ball and ink speckles on paper. The adaptive icon stamps it onto newsprint.</p>
+    </li>
+    
+    <li>
+      <h3>0.1.2</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Poprawka: „Rozpocznij rzuty karne” nie wywala już gry do menu.
+Nakładka wyniku rzutu („GOL!”, „WSPANIAŁA OBRONA!”) znów się pokazuje.
+Błąd w odczycie stanu meczu pokazuje teraz komunikat, a nie zamyka aplikacji.</p>
+      <p lang="en">Fix: “Start penalty shootout” no longer throws you back to the menu.
+The kick outcome banner (“GOAL!”, “WHAT A SAVE!”) is shown again.
+A match-state read error now shows a message instead of closing the app.</p>
+    </li>
+    
+    <li>
+      <h3>0.1.1</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Nowe menu główne: przesuwane zakładki Tabela / Terminarz / Kariera, motyw i pomoc w nagłówku oraz duży przycisk „Graj” na dole ekranu.
+Zapowiedź meczu przed pierwszym rzutem: laurka, nazwy klubów, miejscowości obu drużyn, odległość między nimi i mapka okolicznych klubów.
+Kluby pochodzą z prawdziwych sąsiednich miejscowości (w B klasie do ok. 37 km), a tabela i terminarz pokazują, skąd jest każdy klub.</p>
+      <p lang="en">New main menu: swipeable Tabela / Terminarz / Kariera tabs, theme and help in the header, and a large Play button at the bottom.
+Match preview before the first kick: a laurel crest, both clubs, their towns, the distance between them and a map of nearby clubs.
+Clubs now come from real neighbouring towns (up to ~37 km in the B class), and the table and fixtures show where each club is from.</p>
+    </li>
+    
+    <li>
+      <h3>0.1.0</h3>
+      <time>1 October 2026</time>
+      <p lang="pl">Pierwsza wersja: 5 rzutów karnych z fizyką, kariera przez 8 lig, proceduralne kluby.</p>
+      <p lang="en">First release: 5 penalty kicks with physics, a career across 8 leagues, procedural clubs.</p>
+    </li>
+    
+  </ul>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Więcej</span><span lang="en">More</span></h2>
+  <p class="opis">
+    <a href="https://github.com/pietrusiewicz/bklasahero">github.com/pietrusiewicz/bklasahero</a>
+    
+  </p>
+</article>
+
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../../">wizytówka</a> ·
+    <a href="../../projekty.html">projekty</a> ·
+    <a href="../../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>

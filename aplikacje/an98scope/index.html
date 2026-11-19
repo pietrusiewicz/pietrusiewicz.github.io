@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AN98 Scope — Kacper Pietrusiewicz</title>
+<meta name="description" content="Kamera endoskopowa AN98 (USB UVC) na telefonie: podgląd na żywo, zdjęcia, nagrywanie MP4, zoom i obrót obrazu. Rdzeń w natywnym C++.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<a class="back" href="../">← <span lang="pl">aplikacje</span><span lang="en">apps</span></a>
+<div class="naglowek-aplikacji">
+  <img src="../media/an98scope.png" alt="" width="76" height="76">
+  <div>
+    <h1>AN98 Scope</h1>
+    <p class="meta">Narzędzia i druk 3D · Android · MIT</p>
+  </div>
+</div>
+
+<article>
+  <h2><span lang="pl">Opis</span><span lang="en">About</span></h2>
+  <p class="opis">
+    <span lang="pl">Aplikacja do kamer endoskopowych AN98 i innych kamer USB klasy UVC (5,5 mm lub 7 mm, 6 diod LED, IP67). Podłącz kamerę przez przejściówkę OTG, wybierz ją z listy i patrz na żywo. Możesz zapisywać zdjęcia do galerii, nagrywać wideo do MP4 (koder sprzętowy telefonu), wybierać rozdzielczość i liczbę klatek zgłoszone przez kamerę oraz przybliżać, obracać i odbijać obraz. Jeśli kamera wystawia sterowania obrazu, działają też suwaki jasności i kontrastu; w AN98 jasność diod ma osobne pokrętło na kablu. Ekran diagnostyczny pokazuje deskryptory UVC, wykryte tryby i statystyki strumienia.
+
+Cała obsługa protokołu UVC siedzi w rdzeniu C++ (negocjacja Probe/Commit, składanie ramek MJPEG, dekodowanie). Odbiór danych idzie bezpośrednio przez USBDEVFS, bo publiczne API Androida nie obsługuje transferów izochronicznych, których używa ta kamera. Do zapisu zdjęć użyto libjpeg-turbo. Aplikacja nie wymaga konta ani sieci; nic nie wysyła na zewnątrz.</span>
+    <span lang="en">An app for the AN98 endoscope and other USB Video Class (UVC) cameras (5.5 mm or 7 mm head, 6 LEDs, IP67). Plug the camera in through an OTG adapter, pick it from the list, and watch the live view. You can save photos to the gallery, record video to MP4 (the phone&#x27;s hardware encoder), choose the resolution and frame rate the camera reports, and zoom, rotate, and mirror the image. If the camera exposes image controls, the brightness and contrast sliders work too; on the AN98 the LED brightness has its own wheel on the cable. A diagnostics screen shows the UVC descriptors, the detected modes, and stream statistics.
+
+All UVC protocol handling lives in a native C++ core (Probe/Commit negotiation, MJPEG frame assembly, decoding). Data is read straight through USBDEVFS, because Android&#x27;s public API does not support the isochronous transfers this camera uses. Photos are encoded with libjpeg-turbo. The app needs no account and no network; it sends nothing anywhere.</span>
+  </p>
+</article>
+
+
+<article>
+  <h2><span lang="pl">Pobierz</span><span lang="en">Download</span></h2>
+  <div class="pobrania">
+    
+    <a class="pobierz" href="https://github.com/pietrusiewicz/apps/releases/download/an98scope-v1.0.0/an98scope-1.0.0-android-arm64.apk" download>
+      <span>Android (APK)</span>
+      <small>1.0.0 · 17.1 MB</small>
+    </a>
+    
+  </div>
+  
+  <p class="suma">SHA-256 <code>79b7084fde6b2c2c0b7ee68ff2d17531ebfca36c123089a7d936f4eeec048be3</code></p>
+  
+  <p class="suma">
+    <span lang="pl">Instalacja: pobierz plik i otwórz go na telefonie; Android zapyta o zgodę na instalację spoza sklepu. Starsze wersje i changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/an98scope-v1.0.0">wydanie na GitHubie</a>.</span>
+    <span lang="en">Install: download the file and open it on the phone; Android will ask to allow installs from outside the store. Older versions and changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/an98scope-v1.0.0">release on GitHub</a>.</span>
+  </p>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Zrzuty ekranu</span><span lang="en">Screenshots</span></h2>
+  <div class="zrzuty">
+    
+    <figure>
+      <img src="../media/an98scope-1-polacz.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Połączenie z kamerą (makieta)</span>
+        <span lang="en">Connecting to the camera (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/an98scope-2-podglad.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd na żywo (makieta)</span>
+        <span lang="en">Live preview (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/an98scope-3-tryby.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Wybór rozdzielczości (makieta)</span>
+        <span lang="en">Choosing the resolution (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/an98scope-4-diagnostyka.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Diagnostyka UVC (makieta)</span>
+        <span lang="en">UVC diagnostics (mockup)</span>
+      </figcaption>
+    </figure>
+    
+  </div>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Historia wersji</span><span lang="en">Version history</span></h2>
+  <ul class="historia">
+    
+    <li>
+      <h3>1.0.0</h3>
+      <time>2 October 2026</time>
+      <p lang="pl">Pierwsze wydanie. Podgląd na żywo z kamery UVC przez OTG, zapis zdjęć (JPEG), nagrywanie wideo (MP4), wybór rozdzielczości i liczby klatek, zoom, obrót i odbicia lustrzane, sterowanie jasnością i kontrastem oraz ekran diagnostyczny. Rdzeń protokołu UVC w natywnym C++, odbiór danych przez USBDEVFS (transfery izochroniczne).</p>
+      <p lang="en">First release. Live preview from a UVC camera over OTG, photo capture (JPEG), video recording (MP4), resolution and frame-rate selection, zoom, rotation and mirroring, brightness and contrast control, and a diagnostics screen. Native C++ UVC protocol core, data read through USBDEVFS (isochronous transfers).</p>
+    </li>
+    
+  </ul>
+</article>
+
+
+
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../../">wizytówka</a> ·
+    <a href="../../projekty.html">projekty</a> ·
+    <a href="../../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>

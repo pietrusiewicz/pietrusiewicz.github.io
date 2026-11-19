@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ascend — Kacper Pietrusiewicz</title>
+<meta name="description" content="Pomocnik do medytacji: plan rosnących sesji, licznik z dzwonkiem, prowadzenie oddechu, myśli pisane albo dyktowane, dziennik nastroju i statystyki. Bez konta i bez reklam.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<a class="back" href="../">← <span lang="pl">aplikacje</span><span lang="en">apps</span></a>
+<div class="naglowek-aplikacji">
+  <img src="../media/ascend.png" alt="" width="76" height="76">
+  <div>
+    <h1>Ascend</h1>
+    <p class="meta">Rozwój osobisty · Android · GPL-3.0-or-later</p>
+  </div>
+</div>
+
+<article>
+  <h2><span lang="pl">Opis</span><span lang="en">About</span></h2>
+  <p class="opis">
+    <span lang="pl">Pomocnik do medytacji napisany w natywnym C++. Plan rosnących sesji prowadzi Cię od 5 do 30 minut (drabinka 5, 7, 10, 12, 15, 20, 25, 30 min — po trzech sesjach na kroku idziesz wyżej). Ustaw czas sesji i dzwonek na koniec, prowadź oddech według wybranego wzorca (4-4, 4-7-8, kwadrat, własne rytmy), zapisuj sesje z nastrojem przed i po oraz myślami — tymi wpisanymi albo podyktowanymi mową — i śledź passę dni, łączny czas i liczbę sesji. Cała logika działa lokalnie, bez konta i bez reklam; dane trzymane są w jednym pliku JSON, a aplikacja nie łączy się z siecią. Jedyny wyjątek to dyktowanie: domyślnie rozpoznaje mowę na urządzeniu (głos nie opuszcza telefonu), a gdy telefon tego nie potrafi, po wyraźnej zgodzie używa usługi systemowej — wtedy pod polem widać ostrzeżenie o trybie online. Aplikacja nie zapisuje nagrań; do dziennika trafia tylko rozpoznany tekst. Interfejs po polsku i angielsku.</span>
+    <span lang="en">A meditation helper written in native C++. A growing-session plan takes you from 5 to 30 minutes (a ladder of 5, 7, 10, 12, 15, 20, 25 and 30 min — three sessions at a step and you move up). Set a session length and an end bell, follow guided breathing with a chosen pattern (4-4, 4-7-8, box, or your own rhythms), log sessions with mood before and after plus your thoughts — typed or dictated — and track your day streak, total time, and session count. All logic runs locally, with no account and no ads; data is stored in a single JSON file and the app does not connect to the network. The one exception is dictation: by default speech is recognized on device (your voice never leaves the phone); if the phone cannot do that, the app uses the system service only after your explicit consent, and shows an online-mode warning under the field. The app stores no recordings — only the recognized text reaches the journal. Polish and English UI.</span>
+  </p>
+</article>
+
+
+<article>
+  <h2><span lang="pl">Pobierz</span><span lang="en">Download</span></h2>
+  <div class="pobrania">
+    
+    <a class="pobierz" href="https://github.com/pietrusiewicz/apps/releases/download/ascend-v0.11.0/ascend-0.11.0-android-arm64.apk" download>
+      <span>Android (APK)</span>
+      <small>0.11.0 · 9.1 MB</small>
+    </a>
+    
+  </div>
+  
+  <p class="suma">SHA-256 <code>bb3727a78ecd0151f11a084b96942987e0bd9fe98101d251cf76088d9afb6d02</code></p>
+  
+  <p class="suma">
+    <span lang="pl">Instalacja: pobierz plik i otwórz go na telefonie; Android zapyta o zgodę na instalację spoza sklepu. Starsze wersje i changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/ascend-v0.11.0">wydanie na GitHubie</a>.</span>
+    <span lang="en">Install: download the file and open it on the phone; Android will ask to allow installs from outside the store. Older versions and changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/ascend-v0.11.0">release on GitHub</a>.</span>
+  </p>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Zrzuty ekranu</span><span lang="en">Screenshots</span></h2>
+  <div class="zrzuty">
+    
+    <figure>
+      <img src="../media/ascend-1-medytuj.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Strona główna: słupki, liczby, drabinka planu i okrągłe „Zacznij” (makieta)</span>
+        <span lang="en">Main screen: bars, the numbers, the plan ladder and a round „Start” (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-2-sesja.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Sesja prowadzona: koło z fazami oddechu, zegar i „Zatrzymaj” (makieta)</span>
+        <span lang="en">Guided session: the breathing circle, the timer and „Stop” (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-3-dziennik.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Dziennik sesji: nastrój przed i po, notatki (makieta)</span>
+        <span lang="en">Session journal: mood before and after, notes (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-4-arkusz.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Arkusz „Ustawienia sesji”: wzorzec, tryb, technika, czas, dzwonek (makieta)</span>
+        <span lang="en">The „Session settings” sheet: pattern, mode, technique, length, bell (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-5-wzorce.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Wzorce: własne rytmy obok wbudowanych (makieta)</span>
+        <span lang="en">Patterns: your own rhythms next to built-in ones (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-6-freestyle.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Sesja freestyle: bez prowadzenia oddechu, tylko zegar i aureola (makieta)</span>
+        <span lang="en">Freestyle session: no breathing guidance, just the timer and a halo (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-7-dyktowanie.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Myśli dyktowane mową w trakcie sesji (makieta)</span>
+        <span lang="en">Thoughts dictated during a session (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-8-zapis-sesji.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Zapis sesji: myśli z sesji i nastroje przed/po (makieta)</span>
+        <span lang="en">Saving a session: thoughts from the session plus moods (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-9-plan-start.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Plan rosnących sesji: początek drabinki — krok 1, dziś 5 min (makieta)</span>
+        <span lang="en">Growing-session plan: the start of the ladder — step 1, today 5 min (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-10-plan-szczyt.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Plan ukończony: cała drabinka zaliczona, 30 min (makieta)</span>
+        <span lang="en">Plan completed: the whole ladder done, 30 min (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-11-dyktowanie-online.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Dyktowanie online: ostrzeżenie, że głos przetwarza usługa systemowa (makieta)</span>
+        <span lang="en">Online dictation: a warning that the system service processes your voice (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-12-ustawienia.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Ustawienia: wersja, licencja i prywatność — dane zostają na telefonie (makieta)</span>
+        <span lang="en">Settings: version, license and privacy — your data stays on the phone (mockup)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/ascend-13-wzorce-puste.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Puste „Wzorce”: czym jest wzorzec oddechu i jak dodać własny (makieta)</span>
+        <span lang="en">Empty „Patterns”: what a breathing pattern is and how to add your own (mockup)</span>
+      </figcaption>
+    </figure>
+    
+  </div>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Historia wersji</span><span lang="en">Version history</span></h2>
+  <ul class="historia">
+    
+    <li>
+      <h3>0.11.0</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Czas sesji ustawia się licznikiem: pod okrągłym „Zacznij” są przyciski [−] i [+], a między nimi długość sesji. Do 10 minut licznik idzie po minucie, wyżej po pięć (do 120), a zejście z minuty daje „Bez limitu”. Ten sam licznik jest w arkuszu ustawień sesji, więc nie ma już rzędu chipów z czasem.</p>
+      <p lang="en">Session length is set with a counter: [−] and [+] buttons sit under the round „Start”, with the length between them. Up to 10 minutes it steps by one, then by five (up to 120), and going below one minute gives „No limit”. The same counter is in the session settings sheet, so the row of time chips is gone.</p>
+    </li>
+    
+    <li>
+      <h3>0.10.1</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Większe koło „Zacznij”: 196 dp zamiast 148 dp, z większym napisem. Po usunięciu dolnej belki (0.10.0) zrobiło się na to miejsce, a okrąg jest teraz głównym elementem ekranu — reszta nadal mieści się bez przewijania.</p>
+      <p lang="en">A bigger „Start” circle: 196 dp instead of 148 dp, with a larger label. Removing the bottom bar in 0.10.0 freed the room, and the circle is now the main element of the screen — everything else still fits without scrolling.</p>
+    </li>
+    
+    <li>
+      <h3>0.10.0</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Nawigacja przeniosła się do paska górnego: Dziennik i Ustawienia to dwie ikony w prawym górnym rogu, a dolna belka zniknęła — ekran Medytuj zyskał spokój i przestrzeń. Zakładki „Wzorce” nie ma: do własnych rytmów wchodzi się z arkusza ustawień sesji przyciskiem „Zarządzaj wzorcami”. Ekrany potomne mają „‹ Wróć”.</p>
+      <p lang="en">Navigation moved into the top bar: Journal and Settings are two icons in the top right corner, and the bottom bar is gone — the Meditate screen gained calm and room. The „Patterns” tab is gone too: your own rhythms live behind the „Manage patterns” button in the session settings sheet. Sub-screens have a „‹ Back”.</p>
+    </li>
+    
+    <li>
+      <h3>0.9.0</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Plan rosnących sesji startuje od minuty: drabinka to teraz 1, 5, 7, 10, 12, 15, 20, 25 i 30 minut (dziewięć kroków), więc pierwsza sesja może trwać minutę. Pod okrągłym „Zacznij” doszedł wiersz „Czas (min)” — długość sesji ustawiasz bez otwierania arkusza.</p>
+      <p lang="en">The growing-session plan now starts at one minute: the ladder is 1, 5, 7, 10, 12, 15, 20, 25 and 30 minutes (nine steps), so your first session can be a single minute. A „Time (min)” row under the round „Start” button sets the length without opening the sheet.</p>
+    </li>
+    
+    <li>
+      <h3>0.8.0</h3>
+      <time>4 October 2026</time>
+      <p lang="pl">Strona główna to teraz postęp i jeden przycisk: słupki ostatnich siedmiu dni, liczby (passa, sesje, minuty dziś) i drabinka planu, a pod nimi okrągłe „Zacznij”. Wzorzec, tryb, technika, czas i dzwonek przeniosły się do arkusza „Ustawienia sesji” — otwiera go wiersz pod przyciskiem. Ekran prowadzonej sesji i freestyle są lżejsze, a puste „Wzorce” tłumaczą, po co są i jak dodać własny rytm.</p>
+      <p lang="en">The main screen is now your progress plus one button: bars for the last seven days, the numbers (streak, sessions, minutes today) and the plan ladder, with a round „Start” underneath. Pattern, mode, technique, length and bell moved into the „Session settings” sheet, opened from the row under the button. The guided and freestyle sessions are leaner, and empty „Patterns” explains what they are and how to add your own rhythm.</p>
+    </li>
+    
+    <li>
+      <h3>0.7.0</h3>
+      <time>3 October 2026</time>
+      <p lang="pl">Nowy wygląd: ciemnoniebieski motyw jako jedyny (granatowe tło, stonowane karty, błękitny akcent) i nowe logo — trzy wznoszące się szewrony, czyli plan rosnących sesji. Doszedł ekran Ustawienia z informacjami o aplikacji: wersja, licencja i to, co dzieje się z danymi.</p>
+      <p lang="en">A new look: the dark blue theme is now the only one (navy background, muted cards, light blue accent) and a new logo — three rising chevrons, i.e. the growing-session plan. A new Settings screen shows the version, the license and what happens to your data.</p>
+    </li>
+    
+    <li>
+      <h3>0.6.0</h3>
+      <time>3 October 2026</time>
+      <p lang="pl">Plan rosnących sesji: drabinka 5, 7, 10, 12, 15, 20, 25 i 30 minut — po trzech sesjach na kroku idziesz wyżej. Karta planu na ekranie Medytuj ustawia dzisiejszą długość jednym dotknięciem, a Statystyki pokazują całą drabinkę i postęp. Krok liczy się z zapisanych sesji, więc działa też wstecz.</p>
+      <p lang="en">A growing-session plan: a ladder of 5, 7, 10, 12, 15, 20, 25 and 30 minutes — three sessions at a step and you move up. A plan card on the Meditate screen sets today&#x27;s length in one tap, and Stats show the whole ladder with your progress. The step is derived from saved sessions, so it also works retroactively.</p>
+    </li>
+    
+    <li>
+      <h3>0.5.0</h3>
+      <time>3 October 2026</time>
+      <p lang="pl">Myśli przy medytacji: notatka do dziennika pod przyciskiem Start/Zatrzymaj, pisana albo dyktowana mową. Dyktowanie domyślnie rozpoznaje mowę na urządzeniu (offline), a gdy telefon tego nie potrafi — po zgodzie użytkownika używa usługi systemowej i pokazuje ostrzeżenie o trybie online. Tekst z ekranu medytacji trafia gotowy do okna zapisu sesji.</p>
+      <p lang="en">Thoughts while you meditate: a journal note right under the Start/Stop button, typed or dictated. Dictation uses on-device recognition (offline) by default; if the phone cannot do that, it uses the system service after your consent and shows an online-mode warning. The text from the meditate screen lands ready in the session save dialog.</p>
+    </li>
+    
+    <li>
+      <h3>0.4.0</h3>
+      <time>3 October 2026</time>
+      <p lang="pl">Dzwonek na koniec sesji (1–3 uderzenia, do posłuchania przy wyborze) oraz tryb freestyle — medytacja bez prowadzenia oddechu, tylko zegar i dzwonek. Też w wersji 0.3.0: własne wzorce oddechu.</p>
+      <p lang="en">An end-of-session bell (1–3 strikes, previewed while you pick) and a freestyle mode — meditation without breathing guidance, just the timer and the bell. Also in 0.3.0: your own breathing patterns.</p>
+    </li>
+    
+    <li>
+      <h3>0.3.0</h3>
+      <time>2 October 2026</time>
+      <p lang="pl">Własne wzorce oddechu: nowy ekran „Wzorce” — dodawanie, edycja i usuwanie własnych rytmów (np. wolny 6-8), obok pięciu wbudowanych.</p>
+      <p lang="en">Your own breathing patterns: a new „Patterns” screen to add, edit and delete custom rhythms (e.g. slow 6-8) next to five built-in ones.</p>
+    </li>
+    
+  </ul>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Więcej</span><span lang="en">More</span></h2>
+  <p class="opis">
+    <a href="https://github.com/pietrusiewicz/ascend">github.com/pietrusiewicz/ascend</a>
+    
+  </p>
+</article>
+
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../../">wizytówka</a> ·
+    <a href="../../projekty.html">projekty</a> ·
+    <a href="../../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>

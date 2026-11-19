@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pl" data-lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PstrykScan — Kacper Pietrusiewicz</title>
+<meta name="description" content="Skan 3D z telefonu bez internetu: seria zdjęć i model punktowy (GLB) liczony na urządzeniu. Rdzeń SfM w natywnym C++.">
+<meta name="theme-color" content="#0b0f14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#0b0f14; --line:rgba(255,255,255,.10); --ink:#eef1f4; --muted:#8d95a1; --accent:#6ee7a0; }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:
+      radial-gradient(70% 50% at 15% 0%, #12232a 0%, transparent 60%),
+      linear-gradient(170deg,#0b1117,#070a0e 60%,#05080b);
+    color:var(--ink); font-family:Lato,system-ui,sans-serif; font-size:16.5px; line-height:1.65;
+    min-height:100dvh; padding:40px 20px 80px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(110,231,160,.35); }
+  a:hover { border-bottom-color: var(--accent); }
+  a.bez-linii { border-bottom: 0; }
+  .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .back { color: var(--muted); border:0; }
+  .back:hover { color: var(--accent); }
+  .langs { color: var(--muted); }
+  .langs a { color: var(--muted); border:0; margin-left:10px; }
+  .langs a[aria-pressed="true"] { color: var(--accent); }
+  h1 { font-size: clamp(28px,4vw,40px); font-weight:900; letter-spacing:-.03em; margin:26px 0 4px; }
+  .lead { color: var(--muted); margin:0 0 30px; }
+  .siatka { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:16px; }
+  .karta { display:block; border:1px solid var(--line); border-radius:16px; padding:20px; background:rgba(255,255,255,.02); color:inherit; border-bottom:1px solid var(--line); }
+  .karta:hover { border-color:rgba(110,231,160,.45); }
+  .karta__gora { display:flex; gap:14px; align-items:center; margin-bottom:10px; }
+  .karta__ikona { width:56px; height:56px; border-radius:14px; object-fit:cover; flex:0 0 auto; }
+  .karta__nazwa { font-size:18px; font-weight:700; letter-spacing:-.01em; margin:0; }
+  .karta__opis { color:#c9d0d8; margin:0 0 12px; font-size:15px; }
+  .karta__meta { color:var(--muted); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; }
+  .karta__link { font-size:14px; }
+  .naglowek-aplikacji { display:flex; gap:18px; align-items:center; margin-top:26px; }
+  .naglowek-aplikacji img { width:76px; height:76px; border-radius:18px; object-fit:cover; }
+  .naglowek-aplikacji h1 { margin:0; }
+  .meta { font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin:4px 0 0; }
+  article { border:1px solid var(--line); border-radius:16px; padding:22px 24px; margin:18px 0; background:rgba(255,255,255,.02); }
+  article h2 { font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 12px; }
+  .opis { color:#c9d0d8; white-space:pre-line; margin:0; }
+  .pobrania { display:flex; flex-wrap:wrap; gap:10px; }
+  .pobierz { display:inline-flex; align-items:center; gap:8px; padding:10px 16px; border-radius:12px; background:var(--accent); color:#04120a; font-weight:700; border:0; }
+  .pobierz:hover { filter:brightness(1.08); }
+  .pobierz--drugi { background:transparent; color:var(--accent); border:1px solid rgba(110,231,160,.5); }
+  .pobierz small { font-weight:400; opacity:.75; }
+  .suma { font-size:12px; color:var(--muted); margin-top:10px; word-break:break-all; }
+  .suma code { color:#c9d0d8; }
+  .zrzuty { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px; }
+  .zrzuty figure { margin:0; }
+  .zrzuty img { width:100%; border-radius:10px; border:1px solid var(--line); display:block; }
+  .zrzuty figcaption { font-size:12px; color:var(--muted); margin-top:4px; }
+  .historia { list-style:none; margin:0; padding:0; }
+  .historia li { border-top:1px solid var(--line); padding:12px 0; }
+  .historia li:first-child { border-top:0; padding-top:0; }
+  .historia h3 { font-size:15px; margin:0 0 2px; }
+  .historia time { font-size:12px; color:var(--muted); }
+  .historia p { margin:6px 0 0; color:#c9d0d8; font-size:14.5px; white-space:pre-line; }
+  footer { margin-top:34px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); padding-top:16px; }
+  html[data-lang="pl"] [lang="en"], html[data-lang="en"] [lang="pl"] { display:none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="back" href="../../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <span class="langs">
+      <a href="#" data-j="pl" aria-pressed="true">polski</a>
+      <a href="#" data-j="en" aria-pressed="false">English</a>
+    </span>
+  </div>
+  
+<a class="back" href="../">← <span lang="pl">aplikacje</span><span lang="en">apps</span></a>
+<div class="naglowek-aplikacji">
+  <img src="../media/pstrykscan-logo.png" alt="" width="76" height="76">
+  <div>
+    <h1>PstrykScan</h1>
+    <p class="meta">Narzędzia i druk 3D · Android · MIT</p>
+  </div>
+</div>
+
+<article>
+  <h2><span lang="pl">Opis</span><span lang="en">About</span></h2>
+  <p class="opis">
+    <span lang="pl">PstrykScan robi serię zdjęć obiektu (domyślnie co 0,9 s, z podpowiedzią okrążania), a następnie liczy model 3D **na telefonie** — bez serwera, bez chmury i bez konta. Po zakończeniu model otwiera się w zabudowanym podglądzie: obrót jednym palcem, zoom dwoma.
+
+Rdzeń rekonstrukcji to własny kod w C++ (bez COLMAP-a i bez zależności zewnętrznych): detektor FAST z opisem BRIEF, dopasowanie z testem ratios, macierz zasadnicza z RANSAC, rejestracja zdjęć przez PnP (DLT + Gauss-Newton) oraz bundle adjustment z dopełnieniem Schura. Wynik zapisywany jest jako chmura punktów w formacie GLB.
+
+Ograniczenia, o których trzeba wiedzieć: to wersja 0.2.0 i wynik jest chmurą punktów, nie siatką trójkątów; modelowanie wypukłych, matowych obiektów wychodzi najlepiej. Na syntetycznym teście 24 zdjęć rdzeń rejestruje 17 kamer z medianą błędu 0,40 px — na trudniejszych tematach będzie gorzej. Skan liczy się kilkanaście sekund do minuty zależnie od liczby zdjęć i telefonu. Aplikacja nie wysyła niczego na zewnątrz.</span>
+    <span lang="en">PstrykScan takes a burst of photos of an object (0.9 s apart by default, with a hint to walk around it) and then reconstructs the 3D model **on the phone** — no server, no cloud, no account. When it finishes, the model opens in a built-in viewer: drag to orbit, pinch to zoom.
+
+The reconstruction core is our own C++ (no COLMAP, no external dependencies): FAST detector with BRIEF descriptors, ratio-tested matching, essential matrix with RANSAC, PnP registration (DLT + Gauss-Newton) and bundle adjustment with the Schur complement. The result is saved as a point cloud in GLB.
+
+Known limits: this is 0.2.0 and the output is a point cloud, not a triangle mesh; matte, convex objects reconstruct best. On a synthetic 24-photo test the core registers 17 cameras at a 0.40 px median error — harder subjects will do worse. Reconstruction takes from seconds to about a minute depending on photo count and the phone. Nothing leaves the device.</span>
+  </p>
+</article>
+
+
+<article>
+  <h2><span lang="pl">Pobierz</span><span lang="en">Download</span></h2>
+  <div class="pobrania">
+    
+    <a class="pobierz" href="https://github.com/pietrusiewicz/apps/releases/download/pstrykscan-v0.3.1/pstrykscan-0.3.1-android-arm64.apk" download>
+      <span>Android (APK)</span>
+      <small>0.3.1 · 5.4 MB</small>
+    </a>
+    
+  </div>
+  
+  <p class="suma">SHA-256 <code>7bfc5e031df6d621de582746b8e171fb03cf0325f33944791840214a191e6f5f</code></p>
+  
+  <p class="suma">
+    <span lang="pl">Instalacja: pobierz plik i otwórz go na telefonie; Android zapyta o zgodę na instalację spoza sklepu. Starsze wersje i changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/pstrykscan-v0.3.1">wydanie na GitHubie</a>.</span>
+    <span lang="en">Install: download the file and open it on the phone; Android will ask to allow installs from outside the store. Older versions and changelog: <a href="https://github.com/pietrusiewicz/apps/releases/tag/pstrykscan-v0.3.1">release on GitHub</a>.</span>
+  </p>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Zrzuty ekranu</span><span lang="en">Screenshots</span></h2>
+  <div class="zrzuty">
+    
+    <figure>
+      <img src="../media/pstrykscan-podglad-0-instrukcja.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd interfejsu: ekran „Jak skanować” z piktogramami</span>
+        <span lang="en">Interface preview: the &quot;How to scan&quot; screen with pictograms</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/pstrykscan-podglad-1-kamera.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd interfejsu: ekran kamery (render z layoutu)</span>
+        <span lang="en">Interface preview: camera screen (rendered from the layout)</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/pstrykscan-podglad-2-zbieranie.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd interfejsu: zbieranie zdjęć z podpowiedzią okrążania</span>
+        <span lang="en">Interface preview: capturing with the orbit hint</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/pstrykscan-podglad-3-obliczenia.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd interfejsu: rekonstrukcja na telefonie</span>
+        <span lang="en">Interface preview: on-device reconstruction</span>
+      </figcaption>
+    </figure>
+    
+    <figure>
+      <img src="../media/pstrykscan-podglad-4-model.png" alt="" loading="lazy">
+      <figcaption>
+        <span lang="pl">Podgląd interfejsu: model w podglądzie 3D (prawdziwa chmura z rdzenia)</span>
+        <span lang="en">Interface preview: the model in the 3D viewer (real cloud from the core)</span>
+      </figcaption>
+    </figure>
+    
+  </div>
+</article>
+
+
+
+<article>
+  <h2><span lang="pl">Historia wersji</span><span lang="en">Version history</span></h2>
+  <ul class="historia">
+    
+    <li>
+      <h3>0.3.1</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Skuteczniejsza rekonstrukcja: wieloskalowy detektor cech, PROSAC-owe próbkowanie w RANSAC (dopasowania sortowane po jakości) i 2000 iteracji zamiast 400. Na prawdziwym datasecie obiektu (20 zdjęć, 900 px) liczba zarejestrowanych kamer wzrosła z 3/20 do 6/20, a punktów z 198 do 631 przy medianie błędu 1,00 px.</p>
+      <p lang="en">Better reconstruction: multi-scale feature detection, PROSAC sampling in RANSAC (matches sorted by quality) and 2000 iterations instead of 400. On a real object dataset (20 photos, 900 px) registered cameras went from 3/20 to 6/20 and points from 198 to 631 at a 1.00 px median error.</p>
+    </li>
+    
+    <li>
+      <h3>0.3.0</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Kontrola tekstury przed rekonstrukcją: aplikacja liczy cechy w każdym zdjęciu i przy gładkich tematach (biały kubek, ceramika, szkło) mówi wprost, że nie ma czego dopasować — zamiast po minucie kończyć się ogólnym „nie udało się”. Do tego uczciwsze komunikaty o liczbie zdjęć i błędach aparatu.</p>
+      <p lang="en">Texture check before reconstruction: the app counts keypoints in every photo and, for smooth subjects (a white mug, ceramics, glass), says plainly that there is nothing to match instead of failing with a generic message after a minute. Also clearer messages about shot count and camera errors.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.5</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Zdjęcia robione są teraz jedno po drugim (poprzedni timer startował kolejne, zanim poprzednie się zapisało, i CameraX odrzucał większość), auto-stop po 40 zdjęciach, a po rekonstrukcji widać prawdziwe statystyki rdzenia: ile kamer zarejestrowano, ile punktów i jaki błąd — albo konkretny powód porażki zamiast ogólnego komunikatu.</p>
+      <p lang="en">Photos are now taken strictly one after another (the old timer started the next capture before the previous one was saved, so CameraX rejected most of them), auto-stop after 40 photos, and the result screen shows real core statistics: registered cameras, point count and error — or the concrete failure reason instead of a generic message.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.4</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Ikona aplikacji: launcher w każdej gęstości ekranu (mipmapy) oraz nowa ikona w sklepie o wyższym kontraście — poprzednia była ciemnogranatowa i ginęła na ciemnym tle kafelka.</p>
+      <p lang="en">App icon: launcher icons for every screen density (mipmaps) plus a higher-contrast shop icon — the previous one was dark navy and vanished on the dark card background.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.3</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Geometria liczona z prawdziwą ogniskową: aplikacja czyta rozmiar fizyczny sensora z Camera2 i ogniskową z EXIF (z fallbackiem na odpowiednik 35 mm), a nie zakłada 0,85 x szerokości. Na teście syntetycznym błędna ogniskowa podnosiła błąd reprojekcji z 0,40 px do 1,11 px, więc na telefonach różnica będzie odczuwalna.</p>
+      <p lang="en">Geometry now uses the real focal length: the app reads the sensor&#x27;s physical size from Camera2 and the focal length from EXIF (falling back to the 35 mm equivalent) instead of assuming 0.85 x width. On the synthetic test a wrong focal raised the reprojection error from 0.40 px to 1.11 px, so phones should see a real difference.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.2</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Ekran instruktażowy z piktogramami: obchód dookoła, zakład 70%, miękkie światło, stała odległość 30-50 cm i 20-60 zdjęć. Pokazuje się przy pierwszym uruchomieniu i jest dostępny pod przyciskiem „?”.</p>
+      <p lang="en">Instruction screen with pictograms: walk around the object, 70% overlap, soft light, a steady 30-50 cm distance and 20-60 photos. It appears on first launch and stays available behind the &quot;?&quot; button.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.1</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Poprawka startu: widok modelu 3D ma teraz konstruktor wymagany przez układ XML, więc aplikacja nie zamyka się przy uruchomieniu. Dodatkowo rdzeń natywny jest ładowany defensywnie (komunikat zamiast crasha) i każdy nieoczekiwany błąd zapisuje się do crash.txt w katalogu aplikacji, żeby dało się go przesłać do diagnozy.</p>
+      <p lang="en">Startup fix: the 3D viewer now provides the constructor the XML layout requires, so the app no longer closes on launch. The native core is loaded defensively (a message instead of a crash) and unexpected errors are written to crash.txt in the app directory so they can be sent back for diagnosis.</p>
+    </li>
+    
+    <li>
+      <h3>0.2.0</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Wersja offline: rekonstrukcja liczy się w całości na telefonie, bez serwera i bez wpisywania adresu. Natywny rdzeń SfM w C++ (FAST/BRIEF, RANSAC macierzy zasadniczej, PnP, bundle adjustment), podgląd 3D z obrotem i zoomem, eksport chmury punktów do GLB.</p>
+      <p lang="en">Offline release: reconstruction runs entirely on the phone, no server and no address field. Native C++ SfM core (FAST/BRIEF, essential-matrix RANSAC, PnP, bundle adjustment), a 3D viewer with orbit and zoom, and GLB point-cloud export.</p>
+    </li>
+    
+    <li>
+      <h3>0.1.0</h3>
+      <time>18 November 2026</time>
+      <p lang="pl">Pierwsze wydanie. Zbieranie serii zdjęć z nakładką pokrycia, wysyłka ZIP-em na własny serwer, postęp rekonstrukcji etap po etapie i pobranie modelu GLB. Serwer: natywny C++ z pipeline COLMAP i własnym konwerterem PLY→GLB.</p>
+      <p lang="en">First release. Burst capture with a coverage hint, ZIP upload to your own server, per-stage reconstruction progress and GLB download. Server: native C++ with a COLMAP pipeline and our own PLY→GLB converter.</p>
+    </li>
+    
+  </ul>
+</article>
+
+
+
+
+  <footer>
+    Kacper Pietrusiewicz ·
+    <a href="../../">wizytówka</a> ·
+    <a href="../../projekty.html">projekty</a> ·
+    <a href="../../wiedza/">wiedza</a> ·
+    <a href="mailto:kacper.pietrusiewicz@o2.pl">napisz</a>
+  </footer>
+</div>
+<script>
+  (function () {
+    var wybrane = null;
+    try { wybrane = localStorage.getItem("jezyk"); } catch (e) {}
+    if (!wybrane) { wybrane = "pl"; }
+    document.documentElement.dataset.lang = wybrane;
+    function ustaw(jezyk) {
+      document.documentElement.dataset.lang = jezyk;
+      document.documentElement.lang = jezyk;
+      try { localStorage.setItem("jezyk", jezyk); } catch (e) {}
+      document.querySelectorAll("[data-j]").forEach(function (a) {
+        a.setAttribute("aria-pressed", a.dataset.j === jezyk ? "true" : "false");
+      });
+    }
+    document.querySelectorAll("[data-j]").forEach(function (a) {
+      a.addEventListener("click", function (zdarzenie) {
+        zdarzenie.preventDefault();
+        ustaw(a.dataset.j);
+      });
+    });
+    ustaw(wybrane);
+  })();
+</script>
+</body>
+</html>
