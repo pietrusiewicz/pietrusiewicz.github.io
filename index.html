@@ -465,6 +465,30 @@
   }
   .lang:hover, .lang:focus-visible { color: var(--accent); border-color: rgba(110,231,160,.5); outline: none; }
 
+  .chrome-akcje { display: flex; align-items: center; gap: 8px; }
+
+  .sklep {
+    padding: 3px 10px;
+    border: 1px solid rgba(110,231,160,.4);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 10.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .16s ease, border-color .16s ease;
+  }
+  .sklep:hover, .sklep:focus-visible {
+    background: rgba(110,231,160,.12);
+    border-color: var(--accent);
+    outline: none;
+  }
+  @media (max-width: 470px) {
+    .sklep { padding: 3px 7px; font-size: 9.5px; letter-spacing: .04em; }
+    .chrome-akcje { gap: 5px; }
+  }
+
   .shell {
     display: flex;
     flex-direction: column;
@@ -974,7 +998,10 @@
       <div class="chrome">
         <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         <span class="ch-title">Kacper Pietrusiewicz</span>
-        <button class="lang" id="lang" type="button" aria-label="Zmień język">EN</button>
+        <span class="chrome-akcje">
+          <a class="sklep" href="aplikacje/">sklepik</a>
+          <button class="lang" id="lang" type="button" aria-label="Zmień język">EN</button>
+        </span>
       </div>
 
       <div class="shell" id="shell">

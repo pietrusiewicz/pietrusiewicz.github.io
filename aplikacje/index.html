@@ -24,6 +24,9 @@
   a:hover { border-bottom-color: var(--accent); }
   a.bez-linii { border-bottom: 0; }
   .top { display:flex; justify-content:space-between; align-items:center; gap:16px; font-size:13px; }
+  .nawigacja { display:flex; align-items:center; gap:14px; }
+  .nawigacja a { border:0; }
+  .nawigacja__teraz { color: var(--accent); font-weight:700; }
   .back { color: var(--muted); border:0; }
   .back:hover { color: var(--accent); }
   .langs { color: var(--muted); }
@@ -71,7 +74,10 @@
 <body>
 <div class="wrap">
   <div class="top">
-    <a class="back" href="../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+    <nav class="nawigacja" aria-label="Strony">
+      <a class="back" href="../">← <span lang="pl">wizytówka</span><span lang="en">home</span></a>
+      <span class="nawigacja__teraz" aria-current="page"><span lang="pl">sklepik</span><span lang="en">shop</span></span>
+    </nav>
     <span class="langs">
       <a href="#" data-j="pl" aria-pressed="true">polski</a>
       <a href="#" data-j="en" aria-pressed="false">English</a>
